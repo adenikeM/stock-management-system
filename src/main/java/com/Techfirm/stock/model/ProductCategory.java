@@ -11,8 +11,9 @@ import java.io.Serializable;
 public class ProductCategory implements Serializable {
     @Id
     private Integer id;
-    private String name;
-    private Integer quantity;
+    private String stationary;
+    private String toiletries;
+    private String cosmetics;
 
 
 }
