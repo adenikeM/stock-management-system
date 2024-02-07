@@ -20,6 +20,9 @@ public class User implements Serializable {
     private String otherName;
     private Enum gender;
     private Date birthDate;
+    private String userName;
+    private String address;
+    private String password;
 
 
 }
