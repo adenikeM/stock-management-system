@@ -1,4 +1,4 @@
-package com.Techfirm.stock.model;
+package com.techfirm.stock.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

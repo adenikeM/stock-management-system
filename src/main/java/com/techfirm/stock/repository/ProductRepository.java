@@ -1,6 +1,6 @@
-package com.Techfirm.stock.repository;
+package com.techfirm.stock.repository;
 
-import com.Techfirm.stock.model.Product;
+import com.techfirm.stock.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

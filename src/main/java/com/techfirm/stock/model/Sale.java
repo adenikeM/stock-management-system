@@ -1,4 +1,4 @@
-package com.Techfirm.stock.model;
+package com.techfirm.stock.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.Techfirm.stock.model;
+package com.techfirm.stock.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
