@@ -1,4 +1,4 @@
-package com.Techfirm.stock.model;
+package com.techfirm.stock.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,11 +10,13 @@ import java.io.Serializable;
 
 @Entity
 @Data
-public class Role implements Serializable {
+public class Location implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String roleTitle;
+    private String name;
+    private Integer shelf;
+
 
 
 }

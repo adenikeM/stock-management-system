@@ -1,4 +1,4 @@
-package com.Techfirm.stock;
+package com.techfirm.stock;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
