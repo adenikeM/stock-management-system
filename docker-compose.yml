@@ -9,6 +9,7 @@
       environment:
         - POSTGRES_USER=success
         - POSTGRES_PASSWORD=root
+        - POSTGRES_DB=store_db
       volumes:
         - db:/var/lib/postgresql/data
   volumes:
