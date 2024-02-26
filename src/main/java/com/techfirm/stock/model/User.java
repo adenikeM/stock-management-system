@@ -1,11 +1,9 @@
 package com.techfirm.stock.model;
 
+import com.techfirm.stock.constraint.ValidPassword;
 import com.techfirm.stock.model.enumeration.Gender;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -46,6 +44,9 @@ public class User implements Serializable {
     @OneToOne
     private Address address;
 
-    //todo add annotation for password validator
+    @NotEmpty
+    @Size(min = 8, message = "Password must be at least 8 character long with " +
+            "1 uppercase, 1 lowercase, 1 digit and 1 symbol")
+    @ValidPassword
     private String password;
 }
