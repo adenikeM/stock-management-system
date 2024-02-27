@@ -46,7 +46,7 @@ public class User implements Serializable {
 
     @NotEmpty
     @Size(min = 8, message = "Password must be at least 8 character long with " +
-            "1 uppercase, 1 lowercase, 1 digit and 1 symbol")
+            "1 uppercase, 1 lowercase, 2 digit and 1 symbol")
     @ValidPassword
     private String password;
 }

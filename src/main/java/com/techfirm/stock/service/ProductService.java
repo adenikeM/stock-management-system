@@ -4,12 +4,14 @@ import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.repository.ProductCategoryRepository;
 import com.techfirm.stock.repository.ProductRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@NoArgsConstructor(force = true)
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
