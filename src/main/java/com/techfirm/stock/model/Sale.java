@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Sale implements Serializable {
     private String name;
     private Integer quantitySold;
     private BigDecimal price;
-    private Date saleDate;
+    private LocalDate saleDate;
     @ManyToMany
     private List <Product> products;
 }

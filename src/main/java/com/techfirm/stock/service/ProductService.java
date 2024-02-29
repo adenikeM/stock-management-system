@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@NoArgsConstructor(force = true)
+//@NoArgsConstructor(force = true)
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;

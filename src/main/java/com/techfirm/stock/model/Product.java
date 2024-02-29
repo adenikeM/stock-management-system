@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class Product implements Serializable {
     private Integer quantity;
     private BigDecimal price;
     private String colour;
-    private Date manufactureDate;
-    private Date expiryDate;
+    private LocalDate manufactureDate;
+    private LocalDate expiryDate;
     private String size;
     @ManyToOne
     private ProductCategory productCategory;
