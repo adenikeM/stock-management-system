@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
-@RequestMapping
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 

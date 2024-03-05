@@ -1,6 +1,8 @@
 package com.techfirm.stock.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,13 +19,29 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @NotEmpty(message = "Product name cannot be null")
+    @Column(length = 20, nullable = false)
     private String name;
+
+    @Column(length = 20, nullable = false)
     private Integer quantity;
+
+    @Column(length = 20, nullable = false)
     private BigDecimal price;
+
+    @Column(length = 20, nullable = false)
     private String colour;
+
+    @Past
     private LocalDate manufactureDate;
+
+    @Past
     private LocalDate expiryDate;
+
+    @Column(length = 20, nullable = false)
     private String size;
+
     @ManyToOne
     private ProductCategory productCategory;
 
