@@ -1,6 +1,7 @@
 package com.techfirm.stock.utils;
 
 import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -18,5 +19,15 @@ public class Validation {
         return ResponseEntity.badRequest()
                              .body(buildErrorResponse("ID cannot be null, Id = "
                                      + product.getId(), HttpStatus.BAD_REQUEST));
+    }
+    public static ResponseEntity<?> validateCreateUserRequest(User user) {
+        return ResponseEntity.badRequest()
+                             .body(buildErrorResponse("ID should be null, Id = "
+                                     + user.getId(), HttpStatus.BAD_REQUEST));
+    }
+    public static ResponseEntity<?> validateUpdateUser(User user) {
+        return ResponseEntity.badRequest()
+                             .body(buildErrorResponse("ID cannot be null, Id = "
+                                     + user.getId(), HttpStatus.BAD_REQUEST));
     }
 }
