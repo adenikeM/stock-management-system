@@ -49,4 +49,7 @@ public class User implements Serializable {
             "1 uppercase, 1 lowercase, 2 digit and 1 symbol")
     @ValidPassword
     private String password;
+
+    @OneToOne
+    private Role userRole;
 }
