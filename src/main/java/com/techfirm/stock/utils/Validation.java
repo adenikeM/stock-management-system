@@ -1,6 +1,7 @@
 package com.techfirm.stock.utils;
 
 import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.model.Sale;
 import com.techfirm.stock.model.User;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,15 @@ public class Validation {
         return ResponseEntity.badRequest()
                              .body(buildErrorResponse("ID cannot be null, Id = "
                                      + sale.getId(), HttpStatus.BAD_REQUEST));
+    }
+    public static ResponseEntity<?> validateCreateProductCategoryRequest(ProductCategory productCategory) {
+        return ResponseEntity.badRequest()
+                             .body(buildErrorResponse("ID should be null, Id = "
+                                     + productCategory.getId(), HttpStatus.BAD_REQUEST));
+    }
+    public static ResponseEntity<?> validateUpdateProductCategory(ProductCategory productCategory) {
+        return ResponseEntity.badRequest()
+                             .body(buildErrorResponse("ID cannot be null, Id = "
+                                     + productCategory.getId(), HttpStatus.BAD_REQUEST));
     }
 }
