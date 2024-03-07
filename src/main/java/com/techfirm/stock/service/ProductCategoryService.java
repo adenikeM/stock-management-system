@@ -24,7 +24,7 @@ public class ProductCategoryService {
     public List<ProductCategory> getAllProductCategory(){
         return productCategoryRepository.findAll();
     }
-    public Optional<ProductCategory> getProduct(Integer id){
+    public Optional<ProductCategory> getProductCategory(Integer id){
         return productCategoryRepository.findById(id);
     }
     public ProductCategory createProductCategory(ProductCategory productCategory){

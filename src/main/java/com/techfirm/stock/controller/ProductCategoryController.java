@@ -36,7 +36,7 @@ public class ProductCategoryController {
             ResponseEntity.badRequest().body(
                     buildErrorResponse("Product category id cannot be less than 1", BAD_REQUEST));
         }
-        return productCategoryService.getProduct(id)
+        return productCategoryService.getProductCategory(id)
                              .map(productCategory -> ResponseEntity.ok().body(productCategory))
                              .orElseGet(()-> ResponseEntity.notFound().build());
     }
