@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-//import static com.techfirm.stock.utils.Validation.*;
+import static com.techfirm.stock.utils.Validation.validateCreateLocationRequest;
+import static com.techfirm.stock.utils.Validation.validateUpdateLocation;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
@@ -45,14 +46,14 @@ public class LocationController {
         log.info("Request to create location => {}", location);
         if(location.getId() != null){
             log.info("product location => {}", location);
-           // return validateCreateLocationRequest(location);
+           return validateCreateLocationRequest(location);
         }
         return ResponseEntity.ok().body(locationService.createLocation(location));
     }
     @PutMapping
     public ResponseEntity<?> updateLocation(@RequestBody Location location){
         if(location.getId()==null){
-       //     return validateUpdateLocation(location);
+            return validateUpdateLocation(location);
         }
         Optional<Location> updatedLocation = locationService.updateLocation(location);
         if(updatedLocation.isPresent()){
