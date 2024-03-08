@@ -59,4 +59,14 @@ public class Validation {
                              .body(buildErrorResponse("ID cannot be null, Id = "
                                      + location.getId(), HttpStatus.BAD_REQUEST));
     }
+    public static ResponseEntity<?> validateCreateRoleRequest(Role role) {
+        return ResponseEntity.badRequest()
+                             .body(buildErrorResponse("ID should be null, Id = "
+                                     + role.getId(), HttpStatus.BAD_REQUEST));
+    }
+    public static ResponseEntity<?> validateUpdateRole(Role role) {
+        return ResponseEntity.badRequest()
+                             .body(buildErrorResponse("ID cannot be null, Id = "
+                                     + role.getId(), HttpStatus.BAD_REQUEST));
+    }
 }
