@@ -26,13 +26,13 @@ public class ProductService {
     public Optional<Product> getProduct(Integer id){
         return productRepository.findById(id);
     }
+    public Optional <Product> getProductByName(String name){ return Optional.of((Product) productRepository.findAll());}
     public Product createProduct(Product product){
         ProductCategory category = savedProductWithRepo(product.getProductCategory());
         product.setProductCategory(category);
 
         return productRepository.save(product);
     }
-
 
     private ProductCategory savedProductWithRepo(ProductCategory productCategory) {
         return productCategoryRepository.save(productCategory);

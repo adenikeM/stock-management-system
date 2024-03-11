@@ -39,6 +39,16 @@ public class ProductController {
                 .map(product -> ResponseEntity.ok().body(product))
                 .orElseGet(()-> ResponseEntity.notFound().build());
     }
+    @GetMapping("/{name}")
+    public ResponseEntity<?>getProductByName(@PathVariable String name){
+        log.info("Request to get a product with name : " + name);
+        if (name == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return productService.getProductByName(name)
+                .map(product -> ResponseEntity.ok().body(product))
+                .orElseGet(()-> ResponseEntity.notFound().build());
+        }
     @PostMapping
     public ResponseEntity<?>createProduct(@RequestBody Product product){
         log.info("Request to create product => {}", product);
