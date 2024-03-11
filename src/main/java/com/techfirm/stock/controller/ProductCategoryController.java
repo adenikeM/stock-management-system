@@ -40,6 +40,16 @@ public class ProductCategoryController {
                              .map(productCategory -> ResponseEntity.ok().body(productCategory))
                              .orElseGet(()-> ResponseEntity.notFound().build());
     }
+    @GetMapping("/{name}")
+    public ResponseEntity<?>getProductByName(@PathVariable String name){
+        log.info("Request to get a product category with name : " + name);
+        if (name == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return productCategoryService.getProductCategoryByName(name)
+                             .map(productCategory -> ResponseEntity.ok().body(productCategory))
+                             .orElseGet(()-> ResponseEntity.notFound().build());
+    }
     @PostMapping
     public ResponseEntity<?>createProductCategory(@RequestBody ProductCategory productCategory){
         log.info("Request to create product category => {}", productCategory);

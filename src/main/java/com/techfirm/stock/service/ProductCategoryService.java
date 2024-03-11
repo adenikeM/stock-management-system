@@ -27,6 +27,9 @@ public class ProductCategoryService {
     public Optional<ProductCategory> getProductCategory(Integer id){
         return productCategoryRepository.findById(id);
     }
+    public Optional<ProductCategory> getProductCategoryByName(String name){
+        return Optional.of((ProductCategory) productCategoryRepository.findAll());
+    }
     public ProductCategory createProductCategory(ProductCategory productCategory){
         Location productLocation = savedLocationWithRepo(productCategory.getLocation());
         productCategory.setLocation(productLocation);
