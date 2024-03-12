@@ -25,7 +25,7 @@ public class Product implements Serializable {
     private String name;
 
     @Column(length = 20, nullable = false)
-    private Integer quantity;
+    private Integer availableQuantity;
 
     @Column(length = 20, nullable = false)
     private BigDecimal price;
