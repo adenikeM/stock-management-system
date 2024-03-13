@@ -1,9 +1,8 @@
 package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.Product;
-import com.techfirm.stock.model.Role;
+import com.techfirm.stock.model.ProductSaleRequest;
 import com.techfirm.stock.model.Sale;
-import com.techfirm.stock.model.User;
 import com.techfirm.stock.repository.ProductRepository;
 import com.techfirm.stock.repository.SaleRepository;
 import org.springframework.stereotype.Service;
@@ -41,6 +40,12 @@ public class SaleService {
         sale.setProducts(productList);
         return Optional.of(saleRepository.save(sale));
     }
+//    public Sale UpdateSale2(ProductSaleRequest sale){
+//        Sale fetchedSale =  saleRepository.findById(sale.getProductId()). orElseThrow(() -> new RuntimeException());
+//      fetchedSale.setQuantitySold(fetchedSale.getQuantitySold() + sale.getQuantity());
+//      return saleRepository.save(fetchedSale);
+//    }
+//
     public void deleteSale(Integer id){
         saleRepository.findById(id);
     }

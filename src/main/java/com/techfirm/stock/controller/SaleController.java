@@ -1,5 +1,6 @@
 package com.techfirm.stock.controller;
 
+import com.techfirm.stock.model.ProductSaleRequest;
 import com.techfirm.stock.model.Sale;
 import com.techfirm.stock.model.User;
 import com.techfirm.stock.service.SaleService;
