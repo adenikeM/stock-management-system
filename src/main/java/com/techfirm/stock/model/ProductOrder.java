@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class ProductOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long productOrderId;
+    private Integer productOrderId;
 
     @Column(length = 20, nullable = false)
     private Double quantityOrder;
@@ -35,10 +35,5 @@ public class ProductOrder implements Serializable {
 
     @Past
     private LocalDate deliveryDate;
-
-    @ManyToOne
-    private Product product;
-
-
 
 }
