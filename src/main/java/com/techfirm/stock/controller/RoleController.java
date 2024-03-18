@@ -18,52 +18,57 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
-@RequestMapping("role")
+@RequestMapping("api/role")
 public class RoleController {
     private final RoleService roleService;
 
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
+
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRole(){
+    public ResponseEntity<List<Role>> getAllRole() {
         return ResponseEntity.ok().body(roleService.getAllRole());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?>getRoleByID(@PathVariable Integer id){
+    public ResponseEntity<?> getRoleByID(@PathVariable Integer id) {
         log.info("Get Role id by " + id);
-        if(id < 1){
+        if (id < 1) {
             ResponseEntity.badRequest().body(
                     buildErrorResponse("Role id cannot be less than 1", BAD_REQUEST));
         }
         return roleService.getRole(id)
-                              .map(role -> ResponseEntity.ok().body(role))
-                              .orElseGet(()-> ResponseEntity.notFound().build());
+                          .map(role -> ResponseEntity.ok().body(role))
+                          .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping
-    public ResponseEntity<?>createRole(@RequestBody Role role){
+    public ResponseEntity<?> createRole(@RequestBody Role role) {
         log.info("Request to create role => {}", role);
-        if(role.getId() != null){
+        if (role.getId() != null) {
             log.info("user role => {}", role);
             return validateCreateRoleRequest(role);
         }
         return ResponseEntity.ok().body(roleService.createRole(role));
     }
+
     @PutMapping
-    public ResponseEntity<?> updateRole(@RequestBody Role role){
-        if(role.getId()==null){
+    public ResponseEntity<?> updateRole(@RequestBody Role role) {
+        if (role.getId() == null) {
             return validateUpdateRole(role);
         }
         Optional<Role> updatedRole = roleService.updateRole(role);
-        if(updatedRole.isPresent()){
+        if (updatedRole.isPresent()) {
             return ResponseEntity.ok(updatedRole);
-        }else{
+        } else {
             return ResponseEntity.badRequest().body(buildErrorResponse(
                     "Role with id " + role.getId() + "doesn't exist, Enter correct role id", BAD_REQUEST));
         }
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Role> deleteRole(@PathVariable Integer id){
+    public ResponseEntity<Role> deleteRole(@PathVariable Integer id) {
         roleService.deleteRole(id);
         return ResponseEntity.noContent().build();
     }

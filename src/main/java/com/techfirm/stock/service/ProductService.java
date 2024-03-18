@@ -20,14 +20,20 @@ public class ProductService {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
     }
-    public List<Product> getAllProduct(){
+
+    public List<Product> getAllProduct() {
         return productRepository.findAll();
     }
-    public Optional<Product> getProduct(Integer id){
+
+    public Optional<Product> getProduct(Integer id) {
         return productRepository.findById(id);
     }
-    public Optional <Product> getProductByName(String name){ return Optional.of((Product) productRepository.findAll());}
-    public Product createProduct(Product product){
+
+    public Optional<Product> getProductByName(String name) {
+        return Optional.of((Product) productRepository.findAll());
+    }
+
+    public Product createProduct(Product product) {
         ProductCategory category = savedProductWithRepo(product.getProductCategory());
         product.setProductCategory(category);
 
@@ -37,17 +43,19 @@ public class ProductService {
     private ProductCategory savedProductWithRepo(ProductCategory productCategory) {
         return productCategoryRepository.save(productCategory);
     }
-    public Optional<Product> updateProduct(Product product){
+
+    public Optional<Product> updateProduct(Product product) {
         productRepository.findById(product.getId());
-        if(product.getId() == null){
-            throw  new IllegalArgumentException("Product id must not be null");
+        if (product.getId() == null) {
+            throw new IllegalArgumentException("Product id must not be null");
         }
         ProductCategory category = savedProductWithRepo(product.getProductCategory());
         product.setProductCategory(category);
 
         return Optional.of(productRepository.save(product));
     }
-    public void deleteProduct(Integer id){
+
+    public void deleteProduct(Integer id) {
         productRepository.findById(id);
     }
 }

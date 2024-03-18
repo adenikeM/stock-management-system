@@ -18,26 +18,36 @@ public class UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
-    public List<User> getAllUser(){
+
+    public List<User> getAllUser() {
         return userRepository.findAll();
     }
-    public Optional<User> getUser(Integer id){ return userRepository.findById(id);}
-    public User createUser(User user){
+
+    public Optional<User> getUser(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    public User createUser(User user) {
         Role role = savedRoleWithRepo(user.getUserRole());
         user.setUserRole(role);
         return userRepository.save(user);
     }
+
     private Role savedRoleWithRepo(Role role) {
         return roleRepository.save(role);
     }
-    public Optional<User> UpdateUser(User user){
+
+    public Optional<User> UpdateUser(User user) {
         userRepository.findById(Math.toIntExact(user.getId()));
-        if(user.getId() == null){
-            throw  new IllegalArgumentException("User id cannot be null");
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User id cannot be null");
         }
         Role role = savedRoleWithRepo(user.getUserRole());
         user.setUserRole(role);
         return Optional.of(userRepository.save(user));
     }
-    public void deleteUser(Integer id){userRepository.findById(id);}
+
+    public void deleteUser(Integer id) {
+        userRepository.findById(id);
+    }
 }

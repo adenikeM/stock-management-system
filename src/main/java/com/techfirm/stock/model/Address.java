@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Entity
-@Table(name="user_address")
+@Table(name = "user_address")
 @Data
 public class Address {
     @Id
@@ -20,6 +20,6 @@ public class Address {
     @Column(nullable = false)
     private String city;
 
-    @OneToOne
-    private User user;
+//    @OneToOne
+//    private User user;
 }

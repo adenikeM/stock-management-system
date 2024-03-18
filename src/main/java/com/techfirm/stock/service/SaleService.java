@@ -19,34 +19,42 @@ public class SaleService {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
     }
-    public List<Sale> getAllSale(){
+
+    public List<Sale> getAllSale() {
         return saleRepository.findAll();
     }
-    public Optional<Sale> getSale(Integer id){ return saleRepository.findById(id);}
-    public Sale createSale(Sale sale){
+
+    public Optional<Sale> getSale(Integer id) {
+        return saleRepository.findById(id);
+    }
+
+    public Sale createSale(Sale sale) {
         List<Product> productList = savedProductsWithRepo(sale.getProducts());
         sale.setProducts(productList);
         return saleRepository.save(sale);
     }
+
     private List<Product> savedProductsWithRepo(List<Product> products) {
         return productRepository.saveAll(products);
     }
-    public Optional<Sale> UpdateSale(Sale sale){
+
+    public Optional<Sale> UpdateSale(Sale sale) {
         saleRepository.findById(sale.getId());
-        if(sale.getId() == null){
-            throw  new IllegalArgumentException("Sale id cannot be null");
+        if (sale.getId() == null) {
+            throw new IllegalArgumentException("Sale id cannot be null");
         }
         List<Product> productList = savedProductsWithRepo(sale.getProducts());
         sale.setProducts(productList);
         return Optional.of(saleRepository.save(sale));
     }
-//    public Sale UpdateSale2(ProductSaleRequest sale){
+
+    //    public Sale UpdateSale2(ProductSaleRequest sale){
 //        Sale fetchedSale =  saleRepository.findById(sale.getProductId()). orElseThrow(() -> new RuntimeException());
 //      fetchedSale.setQuantitySold(fetchedSale.getQuantitySold() + sale.getQuantity());
 //      return saleRepository.save(fetchedSale);
 //    }
 //
-    public void deleteSale(Integer id){
+    public void deleteSale(Integer id) {
         saleRepository.findById(id);
     }
 }

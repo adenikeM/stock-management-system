@@ -16,22 +16,28 @@ public class LocationService {
     public LocationService(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
     }
-    public List<Location> getAllLocation(){
+
+    public List<Location> getAllLocation() {
         return locationRepository.findAll();
     }
-    public Optional<Location> getLocation(Integer id){
+
+    public Optional<Location> getLocation(Integer id) {
         return locationRepository.findById(id);
     }
-    public Location createLocation(Location location){
+
+    public Location createLocation(Location location) {
         return locationRepository.save(location);
     }
-    public Optional<Location> updateLocation(Location location){
+
+    public Optional<Location> updateLocation(Location location) {
         locationRepository.findById(location.getId());
-        if(location.getId() == null){
-            throw  new IllegalArgumentException("Location  id must not be null");
+        if (location.getId() == null) {
+            throw new IllegalArgumentException("Location  id must not be null");
         }
         return Optional.of(locationRepository.save(location));
     }
-    public void deleteLocation(Integer id){locationRepository.findById(id);
+
+    public void deleteLocation(Integer id) {
+        locationRepository.findById(id);
     }
 }

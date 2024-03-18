@@ -18,62 +18,68 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
-@RequestMapping("category")
+@RequestMapping("api/category")
 public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
     public ProductCategoryController(ProductCategoryService productCategoryService) {
         this.productCategoryService = productCategoryService;
     }
+
     @GetMapping
-    public ResponseEntity<List<ProductCategory>> getAllProductCategory(){
+    public ResponseEntity<List<ProductCategory>> getAllProductCategory() {
         return ResponseEntity.ok().body(productCategoryService.getAllProductCategory());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?>getProductCategoryByID(@PathVariable Integer id){
+    public ResponseEntity<?> getProductCategoryByID(@PathVariable Integer id) {
         log.info("Get product category id by " + id);
-        if(id < 1){
+        if (id < 1) {
             ResponseEntity.badRequest().body(
                     buildErrorResponse("Product category id cannot be less than 1", BAD_REQUEST));
         }
         return productCategoryService.getProductCategory(id)
-                             .map(productCategory -> ResponseEntity.ok().body(productCategory))
-                             .orElseGet(()-> ResponseEntity.notFound().build());
+                                     .map(productCategory -> ResponseEntity.ok().body(productCategory))
+                                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @GetMapping("/{name}")
-    public ResponseEntity<?>getProductByName(@PathVariable String name){
+    public ResponseEntity<?> getProductByName(@PathVariable String name) {
         log.info("Request to get a product category with name : " + name);
-        if (name == null){
+        if (name == null) {
             return ResponseEntity.badRequest().build();
         }
         return productCategoryService.getProductCategoryByName(name)
-                             .map(productCategory -> ResponseEntity.ok().body(productCategory))
-                             .orElseGet(()-> ResponseEntity.notFound().build());
+                                     .map(productCategory -> ResponseEntity.ok().body(productCategory))
+                                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping
-    public ResponseEntity<?>createProductCategory(@RequestBody ProductCategory productCategory){
+    public ResponseEntity<?> createProductCategory(@RequestBody ProductCategory productCategory) {
         log.info("Request to create product category => {}", productCategory);
-        if(productCategory.getId() != null){
+        if (productCategory.getId() != null) {
             log.info("product category => {}", productCategory);
             return validateCreateProductCategoryRequest(productCategory);
         }
         return ResponseEntity.ok().body(productCategoryService.createProductCategory(productCategory));
     }
+
     @PutMapping
-    public ResponseEntity<?> updateProductCategory(@RequestBody ProductCategory productCategory){
-        if(productCategory.getId()==null){
+    public ResponseEntity<?> updateProductCategory(@RequestBody ProductCategory productCategory) {
+        if (productCategory.getId() == null) {
             return validateUpdateProductCategory(productCategory);
         }
         Optional<ProductCategory> updatedProductCategory = productCategoryService.updateProductCategory(productCategory);
-        if(updatedProductCategory.isPresent()){
+        if (updatedProductCategory.isPresent()) {
             return ResponseEntity.ok(updatedProductCategory);
-        }else{
+        } else {
             return ResponseEntity.badRequest().body(buildErrorResponse(
                     "Product category with id " + productCategory.getId() + "doesn't exist, Enter correct product category id", BAD_REQUEST));
         }
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductCategory> deleteProductCategory(@PathVariable Integer id){
+    public ResponseEntity<ProductCategory> deleteProductCategory(@PathVariable Integer id) {
         productCategoryService.deleteProductCategory(id);
         return ResponseEntity.noContent().build();
     }
