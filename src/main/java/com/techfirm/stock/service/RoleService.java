@@ -16,22 +16,28 @@ public class RoleService {
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-    public List<Role> getAllRole(){
+
+    public List<Role> getAllRole() {
         return roleRepository.findAll();
     }
-    public Optional<Role> getRole(Integer id){
+
+    public Optional<Role> getRole(Integer id) {
         return roleRepository.findById(id);
     }
-    public Role createRole(Role role){
+
+    public Role createRole(Role role) {
         return roleRepository.save(role);
     }
-    public Optional<Role> updateRole(Role role){
-       roleRepository.findById(role.getId());
-        if(role.getId() == null){
-            throw  new IllegalArgumentException("Role id must not be null");
+
+    public Optional<Role> updateRole(Role role) {
+        roleRepository.findById(role.getId());
+        if (role.getId() == null) {
+            throw new IllegalArgumentException("Role id must not be null");
         }
         return Optional.of(roleRepository.save(role));
     }
-    public void deleteRole(Integer id){roleRepository.findById(id);
+
+    public void deleteRole(Integer id) {
+        roleRepository.findById(id);
     }
 }

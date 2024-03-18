@@ -21,28 +21,34 @@ public class ProductCategoryService {
         this.productCategoryRepository = productCategoryRepository;
         this.locationRepository = locationRepository;
     }
-    public List<ProductCategory> getAllProductCategory(){
+
+    public List<ProductCategory> getAllProductCategory() {
         return productCategoryRepository.findAll();
     }
-    public Optional<ProductCategory> getProductCategory(Integer id){
+
+    public Optional<ProductCategory> getProductCategory(Integer id) {
         return productCategoryRepository.findById(id);
     }
-    public Optional<ProductCategory> getProductCategoryByName(String name){
+
+    public Optional<ProductCategory> getProductCategoryByName(String name) {
         return Optional.of((ProductCategory) productCategoryRepository.findAll());
     }
-    public ProductCategory createProductCategory(ProductCategory productCategory){
+
+    public ProductCategory createProductCategory(ProductCategory productCategory) {
         Location productLocation = savedLocationWithRepo(productCategory.getLocation());
         productCategory.setLocation(productLocation);
 
         return productCategoryRepository.save(productCategory);
     }
+
     private Location savedLocationWithRepo(Location location) {
         return locationRepository.save(location);
     }
-    public Optional<ProductCategory> updateProductCategory(ProductCategory productCategory){
+
+    public Optional<ProductCategory> updateProductCategory(ProductCategory productCategory) {
         productCategoryRepository.findById(productCategory.getId());
-        if(productCategory.getId() == null){
-            throw  new IllegalArgumentException("ProductCategory id must not be null");
+        if (productCategory.getId() == null) {
+            throw new IllegalArgumentException("ProductCategory id must not be null");
         }
         Location productLocation = savedLocationWithRepo(productCategory.getLocation());
         productCategory.setLocation(productLocation);
@@ -50,7 +56,9 @@ public class ProductCategoryService {
 
         return Optional.of(productCategoryRepository.save(productCategory));
     }
-    public void deleteProductCategory(Integer id){productCategoryRepository.findById(id);
+
+    public void deleteProductCategory(Integer id) {
+        productCategoryRepository.findById(id);
     }
 }
 

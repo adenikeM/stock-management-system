@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class ProductCategory implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty(message = "Category name cannot be null")

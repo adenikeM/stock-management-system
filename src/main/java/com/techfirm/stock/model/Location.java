@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 public class Location implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty(message = "Location name cannot be null")

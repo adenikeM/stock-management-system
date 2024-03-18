@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "user_profile")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "Last name cannot be null")
