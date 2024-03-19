@@ -17,9 +17,4 @@ public class Role implements Serializable {
     @NotEmpty(message = "Role Title cannot be null")
     @Column(length = 20, nullable = false)
     private String roleTitle;
-
-    @OneToOne
-    private User user;
-
-
 }

@@ -14,12 +14,12 @@ import java.util.Optional;
 @Service
 public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
-    private final LocationRepository locationRepository;
+    private final LocationService locationService;
 
-    public ProductCategoryService(ProductCategoryRepository productCategoryRepository, LocationRepository locationRepository) {
+    public ProductCategoryService(ProductCategoryRepository productCategoryRepository, LocationRepository locationRepository, LocationService locationService) {
 
         this.productCategoryRepository = productCategoryRepository;
-        this.locationRepository = locationRepository;
+        this.locationService = locationService;
     }
 
     public List<ProductCategory> getAllProductCategory() {
@@ -35,22 +35,22 @@ public class ProductCategoryService {
     }
 
     public ProductCategory createProductCategory(ProductCategory productCategory) {
-        Location productLocation = savedLocationWithRepo(productCategory.getLocation());
+        Location productLocation = locationService.createLocation (productCategory.getLocation());
         productCategory.setLocation(productLocation);
 
         return productCategoryRepository.save(productCategory);
     }
 
-    private Location savedLocationWithRepo(Location location) {
-        return locationRepository.save(location);
-    }
+    //private Location savedLocationWithRepo(Location location) {
+        //return locationRepository.save(location);
+    //}
 
     public Optional<ProductCategory> updateProductCategory(ProductCategory productCategory) {
         productCategoryRepository.findById(productCategory.getId());
         if (productCategory.getId() == null) {
             throw new IllegalArgumentException("ProductCategory id must not be null");
         }
-        Location productLocation = savedLocationWithRepo(productCategory.getLocation());
+        Location productLocation = locationService.createLocation(productCategory.getLocation());
         productCategory.setLocation(productLocation);
 
 

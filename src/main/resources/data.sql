@@ -1,13 +1,15 @@
+
 INSERT INTO user_address( address, city) VALUES ('7, Station Road', 'Osogbo');
 INSERT INTO user_address( address, city) VALUES ('Oloje Estate', 'Ilorin');
 
-INSERT INTO role(role_title) VALUES ('Sales girl');
+INSERT INTO user_role(role_title) VALUES ('Sales Attendant');
+INSERT INTO user_role(role_title) VALUES ('Admin');
 
-INSERT INTO user_profile( birth_date,address_id, first_name, last_name,email, gender, other_names, password, user_name)
-VALUES ('2000-03-03','1', 'Tola', 'Ade', 'tola@gmail.com', 'FEMALE', 'Ola', 'Wumit@23','ToksToks');
+INSERT INTO user_profile( birth_date,user_role_id,address_id, first_name, last_name,email, gender, other_names, password, user_name)
+VALUES ('2000-03-03','1','1', 'Tola', 'Ade', 'tola@gmail.com', 'FEMALE', 'Ola', 'Wumit@23','ToksToks');
 
-INSERT INTO user_profile( birth_date, address_id, first_name, last_name,email, gender, other_names, password, user_name)
-VALUES ('2001-03-03','2', 'Tolu', 'Ade', 'tolu@gmail.com', 'FEMALE', 'Ola', 'Wumih@23','TokToks');
+INSERT INTO user_profile( birth_date,user_role_id, address_id, first_name, last_name,email, gender, other_names, password, user_name)
+VALUES ('2001-03-03','2','2', 'Tolu', 'Ade', 'tolu@gmail.com', 'FEMALE', 'Ola', 'Wumih@23','TokToks');
 
 INSERT INTO location(shelf,name)
 VALUES ('2','Right Corner');
@@ -26,6 +28,10 @@ VALUES ('2500.00','10','2023-12-15','Book');
 
 INSERT INTO sale(price,quantity_sold,sale_date,name)
 VALUES ('2000','20','2024-02-10','Biro');
+
+INSERT INTO sale_products(products_id,sale_id) VALUES ('1','1');
+INSERT INTO sale_products(products_id,sale_id) VALUES ('2','2');
+
 
 
 
