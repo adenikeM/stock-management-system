@@ -14,11 +14,11 @@ import java.util.Optional;
 //@NoArgsConstructor(force = true)
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ProductCategoryRepository productCategoryRepository;
+    private final ProductCategoryService productCategoryService;
 
-    public ProductService(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository) {
+    public ProductService(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, ProductCategoryService productCategoryService) {
         this.productRepository = productRepository;
-        this.productCategoryRepository = productCategoryRepository;
+        this.productCategoryService = productCategoryService;
     }
 
     public List<Product> getAllProduct() {
@@ -34,22 +34,22 @@ public class ProductService {
     }
 
     public Product createProduct(Product product) {
-        ProductCategory category = savedProductWithRepo(product.getProductCategory());
+        ProductCategory category = productCategoryService.createProductCategory(product.getProductCategory());
         product.setProductCategory(category);
 
         return productRepository.save(product);
     }
 
-    private ProductCategory savedProductWithRepo(ProductCategory productCategory) {
-        return productCategoryRepository.save(productCategory);
-    }
+   // private ProductCategory savedProductWithRepo(ProductCategory productCategory) {
+    //    return productCategoryRepository.save(productCategory);
+    //}
 
     public Optional<Product> updateProduct(Product product) {
         productRepository.findById(product.getId());
         if (product.getId() == null) {
             throw new IllegalArgumentException("Product id must not be null");
         }
-        ProductCategory category = savedProductWithRepo(product.getProductCategory());
+        ProductCategory category = productCategoryService.createProductCategory(product.getProductCategory());
         product.setProductCategory(category);
 
         return Optional.of(productRepository.save(product));

@@ -1,7 +1,9 @@
 package com.techfirm.stock.service;
 
+import com.techfirm.stock.model.Address;
 import com.techfirm.stock.model.Role;
 import com.techfirm.stock.model.User;
+import com.techfirm.stock.repository.AddressRepository;
 import com.techfirm.stock.repository.RoleRepository;
 import com.techfirm.stock.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -12,11 +14,13 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
+    private final AddressRepository addressRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, RoleService roleService, AddressRepository addressRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
+        this.addressRepository = addressRepository;
     }
 
     public List<User> getAllUser() {
@@ -28,13 +32,11 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        Role role = savedRoleWithRepo(user.getUserRole());
+       Address address = addressRepository.save(user.getAddress());
+        user.setAddress(address);
+        Role role = roleService.createRole(user.getUserRole());
         user.setUserRole(role);
         return userRepository.save(user);
-    }
-
-    private Role savedRoleWithRepo(Role role) {
-        return roleRepository.save(role);
     }
 
     public Optional<User> UpdateUser(User user) {
@@ -42,7 +44,7 @@ public class UserService {
         if (user.getId() == null) {
             throw new IllegalArgumentException("User id cannot be null");
         }
-        Role role = savedRoleWithRepo(user.getUserRole());
+        Role role = roleService.createRole(user.getUserRole());
         user.setUserRole(role);
         return Optional.of(userRepository.save(user));
     }

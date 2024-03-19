@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -36,7 +37,6 @@ public class Product implements Serializable {
     @Past
     private LocalDate manufactureDate;
 
-    @Past
     private LocalDate expiryDate;
 
     @Column(length = 20, nullable = false)
