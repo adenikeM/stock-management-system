@@ -3,6 +3,7 @@ package com.techfirm.stock.controller;
 import com.techfirm.stock.model.ProductOrder;
 import com.techfirm.stock.service.ProductOrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-import static com.techfirm.stock.utils.Validation.validateCreateProductOrderRequest;
-import static com.techfirm.stock.utils.Validation.validateUpdateProductOrder;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
@@ -29,7 +28,9 @@ public class ProductOrderController {
         log.info("Create product order => {}", order);
         if(order.getProductOrderId() != null){
             log.info("product order => {}", order);
-            return validateCreateProductOrderRequest(order);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID should be null, Id = "
+                                         + order.getProductOrderId(), HttpStatus.BAD_REQUEST));
         }
         return ResponseEntity.ok().body(productOrderService.createProductOrder(order));
     }
@@ -51,7 +52,9 @@ public class ProductOrderController {
     @PutMapping
     public ResponseEntity<?> updateProductOrder(@RequestBody ProductOrder order){
         if(order.getProductOrderId() == null){
-            return validateUpdateProductOrder(order);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID cannot be null, Id = "
+                                         + order.getProductOrderId(), HttpStatus.BAD_REQUEST));
         }
         Optional<ProductOrder> updatedProductOrder = productOrderService.updateProductOrder(order);
         if(updatedProductOrder.isPresent()){

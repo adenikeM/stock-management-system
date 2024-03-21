@@ -1,17 +1,20 @@
 package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.Location;
-import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.ProductCategory;
+import com.techfirm.stock.model.dto.ProductCategoryDTO;
 import com.techfirm.stock.repository.LocationRepository;
 import com.techfirm.stock.repository.ProductCategoryRepository;
-import com.techfirm.stock.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.techfirm.stock.utils.ObjectMapper.*;
+
 @Service
+@Slf4j
 public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
     private final LocationService locationService;
@@ -26,13 +29,13 @@ public class ProductCategoryService {
         return productCategoryRepository.findAll();
     }
 
-    public Optional<ProductCategory> getProductCategory(Integer id) {
+    public Optional<ProductCategory> getProductCategoryById(Long id) {
         return productCategoryRepository.findById(id);
     }
 
-    public Optional<ProductCategory> getProductCategoryByName(String name) {
-        return Optional.of((ProductCategory) productCategoryRepository.findAll());
-    }
+//    public Optional<ProductCategory> getProductCategoryByName(String name) {
+//        return Optional.of((ProductCategory) productCategoryRepository.findAll());
+//    }
 
     public ProductCategory createProductCategory(ProductCategory productCategory) {
         Location productLocation = locationService.createLocation (productCategory.getLocation());
@@ -41,15 +44,16 @@ public class ProductCategoryService {
         return productCategoryRepository.save(productCategory);
     }
 
-    //private Location savedLocationWithRepo(Location location) {
-        //return locationRepository.save(location);
-    //}
 
     public Optional<ProductCategory> updateProductCategory(ProductCategory productCategory) {
-        productCategoryRepository.findById(productCategory.getId());
-        if (productCategory.getId() == null) {
+        Long productCategoryId = productCategory.getId();
+        if (productCategoryId == null) {
             throw new IllegalArgumentException("ProductCategory id must not be null");
         }
+
+        productCategoryRepository.findById(productCategoryId)
+                                 .orElseThrow(() -> new IllegalArgumentException("Could not retrieve Product with id " + productCategoryId));
+
         Location productLocation = locationService.createLocation(productCategory.getLocation());
         productCategory.setLocation(productLocation);
 
@@ -57,9 +61,29 @@ public class ProductCategoryService {
         return Optional.of(productCategoryRepository.save(productCategory));
     }
 
-    public void deleteProductCategory(Integer id) {
-        productCategoryRepository.findById(id);
+    public void deleteProductCategory(Long id) {productCategoryRepository.findById(id);}
+
+    public ProductCategory createProductCategoryV2(ProductCategoryDTO createProductCategoryDTO){
+        Location location = locationService.getLocationById(createProductCategoryDTO.getLocationId())
+                                                  .orElseThrow(() -> new IllegalArgumentException("Invalid location id" + createProductCategoryDTO.getLocationId()));
+    ProductCategory productCategory = mapCreateProductCategoryDTOToProductCategory(createProductCategoryDTO, location);
+    return productCategoryRepository.save(productCategory);
+    }
+
+    public ProductCategory updateProductCategoryV2(Long id, ProductCategoryDTO updateProductCategoryDTO){
+        ProductCategory retrievedProductCategory = productCategoryRepository.findById(id)
+                                                    .orElseThrow(() -> new IllegalArgumentException("Could not retrieve Product category with id " + id));
+        log.info("Retrieved product category {}", retrievedProductCategory);
+
+        Long productLocationId = updateProductCategoryDTO.getLocationId();
+        Location location = locationService.getLocationById(productLocationId)
+                                                                .orElseThrow(() -> new IllegalArgumentException("Invalid product category id " + productLocationId));
+
+        mapUpdateProductCategoryDTOToProductCategory(updateProductCategoryDTO, location, retrievedProductCategory);
+        log.info("Retrieved product  category after mapping {}", retrievedProductCategory);
+        return productCategoryRepository.save(retrievedProductCategory);
     }
 }
+
 
 

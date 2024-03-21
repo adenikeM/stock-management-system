@@ -5,6 +5,7 @@ import com.techfirm.stock.model.Sale;
 import com.techfirm.stock.model.User;
 import com.techfirm.stock.service.SaleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-import static com.techfirm.stock.utils.Validation.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
-@RequestMapping("/api/sales")
+@RequestMapping("api")
 public class SaleController {
     private final SaleService saleService;
 
@@ -26,12 +26,12 @@ public class SaleController {
         this.saleService = saleService;
     }
 
-    @GetMapping
+    @GetMapping("/sales")
     public ResponseEntity<List<Sale>> getAllUser() {
         return ResponseEntity.ok().body(saleService.getAllSale());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/sales/{id}")
     public ResponseEntity<?> getSaleByID(@PathVariable Integer id) {
         log.info("Get sale id by " + id);
         if (id < 1) {
@@ -42,20 +42,24 @@ public class SaleController {
                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/sales")
     public ResponseEntity<?> createSale(@RequestBody Sale sale) {
         log.info("Request to create sale => {}", sale);
         if (sale.getId() != null) {
             log.info("user => {}", sale);
-            return validateCreateSaleRequest(sale);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID should be null, Id = "
+                                         + sale.getId(), HttpStatus.BAD_REQUEST));
         }
         return ResponseEntity.ok().body(saleService.createSale(sale));
     }
 
-    @PutMapping
+    @PutMapping("/sales")
     public ResponseEntity<?> updateSale(@RequestBody Sale sale) {
         if (sale.getId() == null) {
-            return validateUpdateSale(sale);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID cannot be null, Id = "
+                                         + sale.getId(), HttpStatus.BAD_REQUEST));
         }
         Optional<Sale> updatedSale = saleService.UpdateSale(sale);
         if (updatedSale.isPresent()) {
@@ -66,7 +70,7 @@ public class SaleController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/sales/{id}")
     public ResponseEntity<Sale> deleteSale(@PathVariable Integer id) {
         saleService.deleteSale(id);
         return ResponseEntity.noContent().build();

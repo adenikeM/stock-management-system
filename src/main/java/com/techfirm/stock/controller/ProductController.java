@@ -1,8 +1,11 @@
 package com.techfirm.stock.controller;
 
 import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.dto.ProductDTO;
 import com.techfirm.stock.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-import static com.techfirm.stock.utils.Validation.validateCreateProductRequest;
-import static com.techfirm.stock.utils.Validation.validateUpdateProduct;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
-@RequestMapping("api/product")
+@RequestMapping("api")
 public class ProductController {
     private final ProductService productService;
 
@@ -25,13 +26,13 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProduct() {
         return ResponseEntity.ok().body(productService.getAllProduct());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductByID(@PathVariable Integer id) {
+    @GetMapping("/products/{id}")
+    public ResponseEntity<?> getProductByID(@PathVariable Long id) {
         log.info("Get product id by " + id);
         if (id < 1) {
             ResponseEntity.badRequest().body(
@@ -42,31 +43,42 @@ public class ProductController {
                              .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<?> getProductByName(@PathVariable String name) {
-        log.info("Request to get a product with name : " + name);
-        if (name == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return productService.getProductByName(name)
-                             .map(product -> ResponseEntity.ok().body(product))
-                             .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+//    @GetMapping("/{name}")
+//    public ResponseEntity<?> getProductByName(@PathVariable String name) {
+//        log.info("Request to get a product with name : " + name);
+//        if (name == null) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        return productService.getProductByName(name)
+//                             .map(product -> ResponseEntity.ok().body(product))
+//                             .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 
-    @PostMapping
+    @PostMapping("/products")
     public ResponseEntity<?> createProduct(@RequestBody Product product) {
         log.info("Request to create product => {}", product);
         if (product.getId() != null) {
             log.info("product => {}", product);
-            return validateCreateProductRequest(product);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID should be null, Id = "
+                                         + product.getId(), HttpStatus.BAD_REQUEST));
+
         }
         return ResponseEntity.ok().body(productService.createProduct(product));
     }
 
-    @PutMapping
+    @PostMapping("/v2/products")
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO createProductDTO) {
+        log.info("Request to create product v2 => {}", createProductDTO);
+        return ResponseEntity.ok().body(productService.createProductV2(createProductDTO));
+    }
+
+    @PutMapping("/products")
     public ResponseEntity<?> updateProduct(@RequestBody Product product) {
         if (product.getId() == null) {
-            return validateUpdateProduct(product);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID cannot be null, Id = "
+                                         + product.getId(), HttpStatus.BAD_REQUEST));
         }
         Optional<Product> updatedProduct = productService.updateProduct(product);
         if (updatedProduct.isPresent()) {
@@ -76,9 +88,15 @@ public class ProductController {
                     "Product with id " + product.getId() + "doesn't exist, Enter correct product id", BAD_REQUEST));
         }
     }
+    @PutMapping("/v2/products/{id}")
+    public ResponseEntity<?> updateProductV2(@Valid @RequestBody ProductDTO updateProductDTO, @PathVariable Long id){
+        log.info("Incoming request to update product v2 with id {} and payload {}", id, updateProductDTO);
+        Product updatedProductV2 = productService.updateProductV2(id, updateProductDTO);
+        return ResponseEntity.ok(updatedProductV2);
+    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable Integer id) {
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
