@@ -3,6 +3,7 @@ package com.techfirm.stock.controller;
 import com.techfirm.stock.model.User;
 import com.techfirm.stock.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-import static com.techfirm.stock.utils.Validation.validateCreateUserRequest;
-import static com.techfirm.stock.utils.Validation.validateUpdateUser;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
-@RequestMapping("/api/users")
+@RequestMapping("api")
 public class UserController {
     private final UserService userService;
 
@@ -25,12 +24,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUser() {
         return ResponseEntity.ok().body(userService.getAllUser());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserByID(@PathVariable Integer id) {
         log.info("Get user id by " + id);
         if (id < 1) {
@@ -41,20 +40,24 @@ public class UserController {
                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         log.info("Request to create user => {}", user);
         if (user.getId() != null) {
             log.info("user => {}", user);
-            return validateCreateUserRequest(user);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID should be null, Id = "
+                                         + user.getId(), HttpStatus.BAD_REQUEST));
         }
         return ResponseEntity.ok().body(userService.createUser(user));
     }
 
-    @PutMapping
+    @PutMapping("/users")
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         if (user.getId() == null) {
-            return validateUpdateUser(user);
+            return ResponseEntity.badRequest()
+                                 .body(buildErrorResponse("ID cannot be null, Id = "
+                                         + user.getId(), HttpStatus.BAD_REQUEST));
         }
         Optional<User> updatedUser = userService.UpdateUser(user);
         if (updatedUser.isPresent()) {
@@ -65,7 +68,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();

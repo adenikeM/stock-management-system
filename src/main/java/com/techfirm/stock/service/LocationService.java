@@ -1,9 +1,7 @@
 package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.Location;
-import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.repository.LocationRepository;
-import com.techfirm.stock.repository.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Optional<Location> getLocation(Integer id) {
+    public Optional<Location> getLocationById(Long id) {
         return locationRepository.findById(id);
     }
 
@@ -37,7 +35,8 @@ public class LocationService {
         return Optional.of(locationRepository.save(location));
     }
 
-    public void deleteLocation(Integer id) {
+    public void deleteLocation(Long id) {
         locationRepository.findById(id);
     }
 }
+

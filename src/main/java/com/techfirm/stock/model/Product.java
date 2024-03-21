@@ -19,7 +19,7 @@ import java.util.List;
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotEmpty(message = "Product name cannot be null")
     @Column(length = 20, nullable = false)
@@ -44,8 +44,4 @@ public class Product implements Serializable {
 
     @ManyToOne
     private ProductCategory productCategory;
-
-
-
-
 }
