@@ -3,6 +3,7 @@ package com.techfirm.stock.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Past;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,4 +46,8 @@ public class Product implements Serializable {
 
     @ManyToOne
     private ProductCategory productCategory;
+
+
+    public Product(Long id, String name, int availableQuantity, java.math.BigDecimal price, java.time.LocalDate manufactureDate, java.time.LocalDate expiryDate, String size, ProductCategory productCategory) {
+    }
 }

@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ProductSaleRequest {
+public class ProductSaleDTO {
     @NotNull
-    private Integer productId;
+    private Long productId;
 
     @NotNull
     @DecimalMax(value = "99999")
