@@ -1,8 +1,7 @@
 package com.techfirm.stock.controller;
 
-import com.techfirm.stock.model.ProductSaleRequest;
+import com.techfirm.stock.model.ProductSaleDTO;
 import com.techfirm.stock.model.Sale;
-import com.techfirm.stock.model.User;
 import com.techfirm.stock.service.SaleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,51 +26,51 @@ public class SaleController {
     }
 
     @GetMapping("/sales")
-    public ResponseEntity<List<Sale>> getAllUser() {
+    public ResponseEntity<List<Sale>> getAllSale() {
         return ResponseEntity.ok().body(saleService.getAllSale());
     }
 
     @GetMapping("/sales/{id}")
-    public ResponseEntity<?> getSaleByID(@PathVariable Integer id) {
+    public ResponseEntity<?> getSaleByID(@PathVariable Long id) {
         log.info("Get sale id by " + id);
         if (id < 1) {
             throw new IllegalArgumentException("Sale ID cannot be less than 1, please input correct ID");
         }
-        return saleService.getSale(id)
+        return saleService.getSaleById(id)
                           .map(sale -> ResponseEntity.ok().body(sale))
                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/sales")
-    public ResponseEntity<?> createSale(@RequestBody Sale sale) {
-        log.info("Request to create sale => {}", sale);
-        if (sale.getId() != null) {
-            log.info("user => {}", sale);
-            return ResponseEntity.badRequest()
-                                 .body(buildErrorResponse("ID should be null, Id = "
-                                         + sale.getId(), HttpStatus.BAD_REQUEST));
-        }
-        return ResponseEntity.ok().body(saleService.createSale(sale));
-    }
+//    @PostMapping("/sales")
+//    public ResponseEntity<?> createSale(@RequestBody Sale sale) {
+//        log.info("Request to create sale => {}", sale);
+//        if (sale.getId() != null) {
+//            log.info("user => {}", sale);
+//            return ResponseEntity.badRequest()
+//                                 .body(buildErrorResponse("ID should be null, Id = "
+//                                         + sale.getId(), HttpStatus.BAD_REQUEST));
+//        }
+//        return ResponseEntity.ok().body(saleService.createSale(sale));
+//    }
 
-    @PutMapping("/sales")
-    public ResponseEntity<?> updateSale(@RequestBody Sale sale) {
-        if (sale.getId() == null) {
-            return ResponseEntity.badRequest()
-                                 .body(buildErrorResponse("ID cannot be null, Id = "
-                                         + sale.getId(), HttpStatus.BAD_REQUEST));
-        }
-        Optional<Sale> updatedSale = saleService.UpdateSale(sale);
-        if (updatedSale.isPresent()) {
-            return ResponseEntity.ok(updatedSale);
-        } else {
-            return ResponseEntity.badRequest().body(buildErrorResponse(
-                    "Sale with id " + sale.getId() + "doesn't exist, Input correct Sale ID ", BAD_REQUEST));
-        }
-    }
+//    @PutMapping("/sales")
+//    public ResponseEntity<?> updateSale(@RequestBody Sale sale) {
+//        if (sale.getId() == null) {
+//            return ResponseEntity.badRequest()
+//                                 .body(buildErrorResponse("ID cannot be null, Id = "
+//                                         + sale.getId(), HttpStatus.BAD_REQUEST));
+//        }
+//        Sale updatedSale = saleService.UpdateSale(new ProductSaleDTO());
+//        if (updatedSale != null) {
+//            return ResponseEntity.ok(updatedSale);
+//        } else {
+//            return ResponseEntity.badRequest().body(buildErrorResponse(
+//                    "Sale with id " + sale.getId() + "doesn't exist, Input correct Sale ID ", BAD_REQUEST));
+//        }
+//    }
 
     @DeleteMapping("/sales/{id}")
-    public ResponseEntity<Sale> deleteSale(@PathVariable Integer id) {
+    public ResponseEntity<Sale> deleteSale(@PathVariable Long id) {
         saleService.deleteSale(id);
         return ResponseEntity.noContent().build();
     }

@@ -16,7 +16,7 @@ import java.util.List;
 public class Sale implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotEmpty(message = "Sale cannot be null")
     @Column(length = 20, nullable = false)
