@@ -6,6 +6,9 @@ import com.techfirm.stock.model.User;
 import com.techfirm.stock.repository.AddressRepository;
 import com.techfirm.stock.repository.RoleRepository;
 import com.techfirm.stock.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +28,11 @@ public class UserService {
 
     public List<User> getAllUser() {
         return userRepository.findAll();
+    }
+
+    public Page<User> getAllUser2(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        return userRepository.findAll(pageable);
     }
 
     public Optional<User> getUser(Integer id) {

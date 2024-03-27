@@ -5,6 +5,7 @@ import com.techfirm.stock.model.Role;
 import com.techfirm.stock.service.LocationService;
 import com.techfirm.stock.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,14 @@ public class RoleController {
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRole() {
         return ResponseEntity.ok().body(roleService.getAllRole());
+    }
+
+    @GetMapping("v2/roles")
+    public ResponseEntity<List<Role>> getAllRole2(
+            @RequestParam(name = "page", defaultValue = "0") int pageNo){
+        int pageSize = 2;
+        Page<Role> roles = roleService.getAllRole2(pageNo,pageSize);
+        return ResponseEntity.ok(roles.getContent());
     }
 
     @GetMapping("/roles/{id}")

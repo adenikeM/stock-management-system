@@ -7,6 +7,9 @@ import com.techfirm.stock.model.Sale;
 import com.techfirm.stock.model.dto.ProductDTO;
 import com.techfirm.stock.repository.SaleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -26,6 +29,11 @@ public class SaleService {
 
     public List<Sale> getAllSale() {
         return saleRepository.findAll();
+    }
+
+    public Page<Sale> getAllSale2(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        return saleRepository.findAll(pageable);
     }
 
     public Optional<Sale> getSaleById(Long id) {
