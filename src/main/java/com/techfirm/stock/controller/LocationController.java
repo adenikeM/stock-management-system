@@ -3,6 +3,7 @@ package com.techfirm.stock.controller;
 import com.techfirm.stock.model.Location;
 import com.techfirm.stock.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,15 @@ public class LocationController {
     public ResponseEntity<List<Location>> getAllLocation() {
         return ResponseEntity.ok().body(locationService.getAllLocation());
     }
+
+    @GetMapping("/v2/locations")
+    public ResponseEntity<List<Location>> getAllLocation2(
+            @RequestParam(name = "page", defaultValue = "0") int pageNo){
+      int pageSize = 2;
+        Page<Location> locations = locationService.getAllLocation2(pageNo, pageSize);
+        return ResponseEntity.ok(locations.getContent());
+    }
+
 
     @GetMapping("/locations/{id}")
     public ResponseEntity<?> getLocationByID(@PathVariable Long id) {

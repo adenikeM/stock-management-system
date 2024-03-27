@@ -2,6 +2,9 @@ package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.Location;
 import com.techfirm.stock.repository.LocationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,11 @@ public class LocationService {
 
     public List<Location> getAllLocation() {
         return locationRepository.findAll();
+    }
+
+    public Page<Location> getAllLocation2(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        return locationRepository.findAll(pageable);
     }
 
     public Optional<Location> getLocationById(Long id) {

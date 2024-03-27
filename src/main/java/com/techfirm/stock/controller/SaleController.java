@@ -4,6 +4,7 @@ import com.techfirm.stock.model.ProductSaleDTO;
 import com.techfirm.stock.model.Sale;
 import com.techfirm.stock.service.SaleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,15 @@ public class SaleController {
     public ResponseEntity<List<Sale>> getAllSale() {
         return ResponseEntity.ok().body(saleService.getAllSale());
     }
+
+    @GetMapping("/v2/sales")
+    public ResponseEntity<List<Sale>> getAllSale2(
+            @RequestParam(name = "page", defaultValue = "0") int pageNo){
+        int pageSize = 1;
+        Page<Sale> sales = saleService.getAllSale2(pageNo, pageSize);
+        return ResponseEntity.ok(sales.getContent());
+    }
+
 
     @GetMapping("/sales/{id}")
     public ResponseEntity<?> getSaleByID(@PathVariable Long id) {

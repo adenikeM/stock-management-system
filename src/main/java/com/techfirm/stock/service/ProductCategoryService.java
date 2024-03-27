@@ -1,11 +1,15 @@
 package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.Location;
+import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.model.dto.ProductCategoryDTO;
 import com.techfirm.stock.repository.LocationRepository;
 import com.techfirm.stock.repository.ProductCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +31,11 @@ public class ProductCategoryService {
 
     public List<ProductCategory> getAllProductCategory() {
         return productCategoryRepository.findAll();
+    }
+
+    public Page<ProductCategory> getAllProductCategory2(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return productCategoryRepository.findAll(pageable);
     }
 
     public Optional<ProductCategory> getProductCategoryById(Long id) {

@@ -7,6 +7,7 @@ import com.techfirm.stock.model.dto.ProductDTO;
 import com.techfirm.stock.service.ProductCategoryService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,15 @@ public class ProductCategoryController {
     @GetMapping("/category")
     public ResponseEntity<List<ProductCategory>> getAllProductCategory() {
         return ResponseEntity.ok().body(productCategoryService.getAllProductCategory());
+    }
+
+    @GetMapping("/v2/category")
+    public ResponseEntity<List<ProductCategory>> getAllProductCategory2(
+            @RequestParam(name = "page", defaultValue = "0" ) Integer pageNo){
+        int pageSize = 1;
+        Page<ProductCategory> category = productCategoryService.getAllProductCategory2(pageNo, pageSize);
+        return ResponseEntity.ok(category.getContent());
+
     }
 
     @GetMapping("/category/{id}")

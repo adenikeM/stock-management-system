@@ -4,6 +4,9 @@ import com.techfirm.stock.model.Location;
 import com.techfirm.stock.model.Role;
 import com.techfirm.stock.repository.LocationRepository;
 import com.techfirm.stock.repository.RoleRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +22,11 @@ public class RoleService {
 
     public List<Role> getAllRole() {
         return roleRepository.findAll();
+    }
+
+    public Page<Role> getAllRole2(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        return roleRepository.findAll(pageable);
     }
 
     public Optional<Role> getRole(Integer id) {

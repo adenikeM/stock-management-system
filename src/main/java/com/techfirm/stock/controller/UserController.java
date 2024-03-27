@@ -3,6 +3,7 @@ package com.techfirm.stock.controller;
 import com.techfirm.stock.model.User;
 import com.techfirm.stock.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,15 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUser() {
         return ResponseEntity.ok().body(userService.getAllUser());
     }
+
+    @GetMapping("/v2/users")
+    public ResponseEntity<List<User>> getAllUser2(
+            @RequestParam(name = "page", defaultValue = "0") int pageNo){
+        int pageSize = 2;
+        Page<User> users = userService.getAllUser2(pageNo,pageSize);
+        return ResponseEntity.ok(users.getContent());
+    }
+
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserByID(@PathVariable Integer id) {
