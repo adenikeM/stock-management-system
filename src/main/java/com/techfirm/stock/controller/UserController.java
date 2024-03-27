@@ -32,9 +32,10 @@ public class UserController {
 
     @GetMapping("/v2/users")
     public ResponseEntity<List<User>> getAllUser2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-        int pageSize = 2;
-        Page<User> users = userService.getAllUser2(pageNo,pageSize);
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize){
+
+        Page<User> users = userService.getAllUser2(page,pageSize);
         return ResponseEntity.ok(users.getContent());
     }
 

@@ -1,8 +1,6 @@
 package com.techfirm.stock.controller;
 
-import com.techfirm.stock.model.Location;
 import com.techfirm.stock.model.Role;
-import com.techfirm.stock.service.LocationService;
 import com.techfirm.stock.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,9 +32,9 @@ public class RoleController {
 
     @GetMapping("v2/roles")
     public ResponseEntity<List<Role>> getAllRole2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-        int pageSize = 2;
-        Page<Role> roles = roleService.getAllRole2(pageNo,pageSize);
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize){
+        Page<Role> roles = roleService.getAllRole2(page,pageSize);
         return ResponseEntity.ok(roles.getContent());
     }
 

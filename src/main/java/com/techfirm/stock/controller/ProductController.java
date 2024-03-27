@@ -6,8 +6,6 @@ import com.techfirm.stock.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,9 +34,9 @@ public class ProductController {
 
     @GetMapping("/v2/products")
     public ResponseEntity<List<Product>> getAllProduct2(
-            @RequestParam(name = "page", defaultValue = "0") Integer pageNo) {
-        int pageSize = 1;
-        Page<Product> products = productService.getAllProduct2(pageNo, pageSize);
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize) {
+        Page<Product> products = productService.getAllProduct2(page, pageSize);
         return ResponseEntity.ok(products.getContent()) ;
     }
 

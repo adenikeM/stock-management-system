@@ -1,20 +1,14 @@
 package com.techfirm.stock.controller;
 
-import com.techfirm.stock.model.ProductSaleDTO;
 import com.techfirm.stock.model.Sale;
 import com.techfirm.stock.service.SaleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
@@ -33,9 +27,10 @@ public class SaleController {
 
     @GetMapping("/v2/sales")
     public ResponseEntity<List<Sale>> getAllSale2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-        int pageSize = 1;
-        Page<Sale> sales = saleService.getAllSale2(pageNo, pageSize);
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize){
+
+        Page<Sale> sales = saleService.getAllSale2(page, pageSize);
         return ResponseEntity.ok(sales.getContent());
     }
 

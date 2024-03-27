@@ -33,8 +33,8 @@ public class ProductCategoryService {
         return productCategoryRepository.findAll();
     }
 
-    public Page<ProductCategory> getAllProductCategory2(int pageNo, int pageSize){
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public Page<ProductCategory> getAllProductCategory2(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
         return productCategoryRepository.findAll(pageable);
     }
 

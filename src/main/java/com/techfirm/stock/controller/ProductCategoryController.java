@@ -1,9 +1,7 @@
 package com.techfirm.stock.controller;
 
-import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.model.dto.ProductCategoryDTO;
-import com.techfirm.stock.model.dto.ProductDTO;
 import com.techfirm.stock.service.ProductCategoryService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +34,10 @@ public class ProductCategoryController {
 
     @GetMapping("/v2/category")
     public ResponseEntity<List<ProductCategory>> getAllProductCategory2(
-            @RequestParam(name = "page", defaultValue = "0" ) Integer pageNo){
-        int pageSize = 1;
-        Page<ProductCategory> category = productCategoryService.getAllProductCategory2(pageNo, pageSize);
+            @RequestParam(name = "page", defaultValue = "0" ) Integer page,
+            @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize){
+
+        Page<ProductCategory> category = productCategoryService.getAllProductCategory2(page, pageSize);
         return ResponseEntity.ok(category.getContent());
 
     }

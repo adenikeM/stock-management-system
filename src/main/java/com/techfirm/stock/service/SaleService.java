@@ -31,8 +31,8 @@ public class SaleService {
         return saleRepository.findAll();
     }
 
-    public Page<Sale> getAllSale2(int pageNo, int pageSize){
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+    public Page<Sale> getAllSale2(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page,pageSize);
         return saleRepository.findAll(pageable);
     }
 

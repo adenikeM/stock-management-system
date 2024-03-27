@@ -22,8 +22,8 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Page<Location> getAllLocation2(int pageNo, int pageSize){
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+    public Page<Location> getAllLocation2(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page,pageSize);
         return locationRepository.findAll(pageable);
     }
 

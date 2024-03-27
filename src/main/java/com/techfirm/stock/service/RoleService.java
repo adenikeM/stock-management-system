@@ -24,8 +24,8 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Page<Role> getAllRole2(int pageNo, int pageSize){
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+    public Page<Role> getAllRole2(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page,pageSize);
         return roleRepository.findAll(pageable);
     }
 
