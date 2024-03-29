@@ -1,13 +1,15 @@
 package com.techfirm.stock.controller;
 
 import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.Sales;
 import com.techfirm.stock.model.dto.ProductDTO;
+import com.techfirm.stock.model.dto.ProductPriceDTO;
+import com.techfirm.stock.model.dto.ProductsToBePriced;
+import com.techfirm.stock.model.dto.SellProductsDTO;
 import com.techfirm.stock.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -111,6 +113,23 @@ public class ProductController {
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/products/price")
+    public ResponseEntity<ProductPriceDTO> getProductPrice(@RequestBody List<ProductsToBePriced> productsToBePriced) {
+        log.info("Incoming request to get product price with ids {}", productsToBePriced);
+        ProductPriceDTO productPriceDTO = productService.getProductPriceV2(productsToBePriced);
+        log.info("Response for product price {}", productPriceDTO);
+        return ResponseEntity.ok(productPriceDTO);
+    }
+
+    //endpoint to sell product
+    @PostMapping("/products/sell")
+    public ResponseEntity<Sales> sellProducts(@Valid @RequestBody SellProductsDTO sellProductsDTO) {
+        log.info("Incoming request to sell products {}", sellProductsDTO);
+        Sales sales = productService.sellProduct(sellProductsDTO);
+        log.info("Response for sell product {}", sales);
+        return ResponseEntity.ok(sales);
     }
 }
 

@@ -1,61 +1,65 @@
 package com.techfirm.stock.service;
 
-import com.techfirm.stock.model.Product;
-import com.techfirm.stock.model.ProductCategory;
-import com.techfirm.stock.model.ProductSaleDTO;
-import com.techfirm.stock.model.Sale;
-import com.techfirm.stock.model.dto.ProductDTO;
-import com.techfirm.stock.repository.SaleRepository;
+import com.techfirm.stock.model.Sales;
+import com.techfirm.stock.repository.SalesRepository;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @Slf4j
-public class SaleService {
-    private final SaleRepository saleRepository;
-    private final ProductService productService;
+@RequiredArgsConstructor
+public class SalesService {
+    private final SalesRepository salesRepository;
 
-    public SaleService(SaleRepository saleRepository, ProductService productService) {
-        this.saleRepository = saleRepository;
-        this.productService = productService;
+    public List<Sales> getAllSale() {
+        return salesRepository.findAll();
     }
 
-    public List<Sale> getAllSale() {
-        return saleRepository.findAll();
-    }
-
-    public Page<Sale> getAllSale2(int pageNo, int pageSize){
+    public Page<Sales> getAllSale2(int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo,pageSize);
-        return saleRepository.findAll(pageable);
+        return salesRepository.findAll(pageable);
     }
 
-    public Optional<Sale> getSaleById(Long id) {
-        return saleRepository.findById(Math.toIntExact(id));
+    public Optional<Sales> getSaleById(Long id) {
+        return salesRepository.findById(Math.toIntExact(id));
     }
-//    public Sale createSale(Sale sale){
-//        saleRepository.save(sale);
+//    public Sales createSale(Sales sales){
+//        saleRepository.save(sales);
 //    }
-//    public Sale updateSale(Sale sale, ) {
-//        Long SaleId = sale.getId();
+//    public Sales updateSale(Sales sales, ) {
+//        Long SaleId = sales.getId();
 //        if (SaleId == null) {
-//            throw new IllegalArgumentException("Sale id cannot be null");}
+//            throw new IllegalArgumentException("Sales id cannot be null");}
 //        Product retrievedProduct = productService.getProduct()
-//        if (sale.getQuantitySold() < retrievedProduct.getAvailableQuantity()) {
+//        if (sales.getQuantitySold() < retrievedProduct.getAvailableQuantity()) {
 //                throw new IllegalArgumentException("No enough product quantity");
 //            }
-//           Integer Quantity = retrievedProduct.getAvailableQuantity() - sale.getQuantitySold();
-//        return saleRepository.save(sale);
+//           Integer Quantity = retrievedProduct.getAvailableQuantity() - sales.getQuantitySold();
+//        return saleRepository.save(sales);
 //    }
 
     public void deleteSale(Long id) {
-        saleRepository.findById(Math.toIntExact(id));
+        salesRepository.findById(Math.toIntExact(id));
+    }
+
+    public Sales createSale(Sales sales) {
+        log.info("request to create new sales {} ", sales);
+        if (!Objects.isNull(sales.getId())) {
+            throw new IllegalArgumentException("New sales cannot have id");
+        }
+
+        return salesRepository.save(sales);
     }
 }
 
