@@ -1,14 +1,12 @@
 package com.techfirm.stock.service;
 
-import com.techfirm.stock.model.CustomerInfo;
-import com.techfirm.stock.model.Product;
-import com.techfirm.stock.model.ProductCategory;
-import com.techfirm.stock.model.Sales;
+import com.techfirm.stock.model.*;
 import com.techfirm.stock.model.dto.ProductDTO;
 import com.techfirm.stock.model.dto.ProductPrice;
 import com.techfirm.stock.model.dto.ProductPriceDTO;
 import com.techfirm.stock.model.dto.ProductsToBePriced;
 import com.techfirm.stock.model.dto.SellProductsDTO;
+import com.techfirm.stock.repository.AddressRepository;
 import com.techfirm.stock.repository.CustomerInfoRepository;
 import com.techfirm.stock.repository.ProductRepository;
 
@@ -22,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +40,7 @@ public class ProductService {
     private final ProductCategoryService productCategoryService;
     private final CustomerInfoRepository customerInfoRepository;
     private final SalesService salesService;
+    private final AddressRepository addressRepository;
 
     public List<Product> getAllProduct() {
         return productRepository.findAll();
@@ -51,13 +51,15 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Page<Product> searchProductByFilter(String name, String colour,  int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByNameAndColour(name, colour,  pageable);
+    }
+
     public Optional<Product> getProduct(Long id) {
         return productRepository.findById(id);
     }
 
-//    public Optional<Product> getProductByName(String name) {
-//        return Optional.of((Product) productRepository.findAll());
-//    }
 
     public Product createProduct(Product product) {
         ProductCategory category = productCategoryService.createProductCategory(product.getProductCategory());
@@ -203,6 +205,8 @@ public class ProductService {
         //create customer info if not exist or retrieve if exist
         CustomerInfo customerInfo = sellProductsDTO.getCustomerInfo();
         if(customerInfo.getId() == null) {
+            Address address = addressRepository.save(customerInfo.getAddress());
+            customerInfo.setAddress(address);
             customerInfo = customerInfoRepository.save(customerInfo);
         } else {
             customerInfo = customerInfoRepository.findById(customerInfo.getId()).orElseThrow();
@@ -216,26 +220,8 @@ public class ProductService {
         List<Product> retrievedProducts = productRepository.findAllById(productIdList);
 
         //validate enough quantity
-        ensureEnoughQuantityAndPrepareSalesData(retrievedProducts, productsToBeSold, salesPrice, totalQuantitySold);
-
-        //update product using repository
-        List<Product> updatedProducts = productRepository.saveAll(retrievedProducts);
-
-        //build sales entity
-        Sales sales = Sales.builder()
-                .customerInfo(customerInfo)
-                .products(updatedProducts)
-                .price(salesPrice)
-                .totalQuantitySold(totalQuantitySold)
-                .build();
-
-        //save sales entity and return
-        return salesService.createSale(sales);
-    }
-
-    private static void ensureEnoughQuantityAndPrepareSalesData(List<Product> retrievedProducts, List<ProductsToBePriced> productsToBeSold, BigDecimal salesPrice, int totalQuantitySold) {
-        for (Product product : retrievedProducts) {
-            for (ProductsToBePriced productToBeSold : productsToBeSold) {
+        for (ProductsToBePriced productToBeSold : productsToBeSold) {
+            for (Product product : retrievedProducts) {
                 if (Objects.equals(product.getId(), productToBeSold.getProductId())) {
                     int quantityToBeSold = productToBeSold.getQuantity();
                     Integer initialAvailableQuantity = product.getAvailableQuantity();
@@ -254,6 +240,25 @@ public class ProductService {
                 }
             }
         }
+//        ensureEnoughQuantityAndPrepareSalesData(retrievedProducts, productsToBeSold, salesPrice, totalQuantitySold);
+        //update product using repository
+        List<Product> updatedProducts = productRepository.saveAll(retrievedProducts);
+
+        //build sales entity
+        Sales sales = Sales.builder()
+                .customerInfo(customerInfo)
+                .products(updatedProducts)
+                .price(salesPrice)
+                .salesDate(LocalDateTime.now())
+                .totalQuantitySold(totalQuantitySold)
+                .build();
+
+        //save sales entity and return
+        return salesService.createSale(sales);
+    }
+
+    private static void ensureEnoughQuantityAndPrepareSalesData(List<Product> retrievedProducts, List<ProductsToBePriced> productsToBeSold, BigDecimal salesPrice, int totalQuantitySold) {
+
     }
 
     private List<Long> ensureProductsExistAndGetproductIds(List<ProductsToBePriced> productsToBeSold) {
