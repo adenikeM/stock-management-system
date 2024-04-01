@@ -1,41 +1,36 @@
 package com.techfirm.stock.controller;
 
-import com.techfirm.stock.model.ProductSaleDTO;
-import com.techfirm.stock.model.Sale;
-import com.techfirm.stock.service.SaleService;
+import com.techfirm.stock.model.Sales;
+import com.techfirm.stock.service.SalesService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.techfirm.stock.exception.ErrorResponse.buildErrorResponse;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Controller
 @Slf4j
 @RequestMapping("api")
-public class SaleController {
-    private final SaleService saleService;
+public class SalesController {
+    private final SalesService salesService;
 
-    public SaleController(SaleService saleService) {
-        this.saleService = saleService;
+    public SalesController(SalesService salesService) {
+        this.salesService = salesService;
     }
 
     @GetMapping("/sales")
-    public ResponseEntity<List<Sale>> getAllSale() {
-        return ResponseEntity.ok().body(saleService.getAllSale());
+    public ResponseEntity<List<Sales>> getAllSale() {
+        return ResponseEntity.ok().body(salesService.getAllSale());
     }
 
     @GetMapping("/v2/sales")
-    public ResponseEntity<List<Sale>> getAllSale2(
+    public ResponseEntity<List<Sales>> getAllSale2(
             @RequestParam(name = "page", defaultValue = "0") int pageNo){
         int pageSize = 1;
-        Page<Sale> sales = saleService.getAllSale2(pageNo, pageSize);
+        Page<Sales> sales = salesService.getAllSale2(pageNo, pageSize);
         return ResponseEntity.ok(sales.getContent());
     }
 
@@ -44,15 +39,15 @@ public class SaleController {
     public ResponseEntity<?> getSaleByID(@PathVariable Long id) {
         log.info("Get sale id by " + id);
         if (id < 1) {
-            throw new IllegalArgumentException("Sale ID cannot be less than 1, please input correct ID");
+            throw new IllegalArgumentException("Sales ID cannot be less than 1, please input correct ID");
         }
-        return saleService.getSaleById(id)
+        return salesService.getSaleById(id)
                           .map(sale -> ResponseEntity.ok().body(sale))
                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 //    @PostMapping("/sales")
-//    public ResponseEntity<?> createSale(@RequestBody Sale sale) {
+//    public ResponseEntity<?> createSale(@RequestBody Sales sale) {
 //        log.info("Request to create sale => {}", sale);
 //        if (sale.getId() != null) {
 //            log.info("user => {}", sale);
@@ -64,24 +59,24 @@ public class SaleController {
 //    }
 
 //    @PutMapping("/sales")
-//    public ResponseEntity<?> updateSale(@RequestBody Sale sale) {
+//    public ResponseEntity<?> updateSale(@RequestBody Sales sale) {
 //        if (sale.getId() == null) {
 //            return ResponseEntity.badRequest()
 //                                 .body(buildErrorResponse("ID cannot be null, Id = "
 //                                         + sale.getId(), HttpStatus.BAD_REQUEST));
 //        }
-//        Sale updatedSale = saleService.UpdateSale(new ProductSaleDTO());
+//        Sales updatedSale = saleService.UpdateSale(new ProductSaleDTO());
 //        if (updatedSale != null) {
 //            return ResponseEntity.ok(updatedSale);
 //        } else {
 //            return ResponseEntity.badRequest().body(buildErrorResponse(
-//                    "Sale with id " + sale.getId() + "doesn't exist, Input correct Sale ID ", BAD_REQUEST));
+//                    "Sales with id " + sale.getId() + "doesn't exist, Input correct Sales ID ", BAD_REQUEST));
 //        }
 //    }
 
     @DeleteMapping("/sales/{id}")
-    public ResponseEntity<Sale> deleteSale(@PathVariable Long id) {
-        saleService.deleteSale(id);
+    public ResponseEntity<Sales> deleteSale(@PathVariable Long id) {
+        salesService.deleteSale(id);
         return ResponseEntity.noContent().build();
     }
 }

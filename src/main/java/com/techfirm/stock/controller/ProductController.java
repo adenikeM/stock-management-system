@@ -1,13 +1,16 @@
 package com.techfirm.stock.controller;
 
 import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.ProductCategory;
+import com.techfirm.stock.model.Sales;
 import com.techfirm.stock.model.dto.ProductDTO;
+import com.techfirm.stock.model.dto.ProductPriceDTO;
+import com.techfirm.stock.model.dto.ProductsToBePriced;
+import com.techfirm.stock.model.dto.SellProductsDTO;
 import com.techfirm.stock.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,11 +39,21 @@ public class ProductController {
 
     @GetMapping("/v2/products")
     public ResponseEntity<List<Product>> getAllProduct2(
-            @RequestParam(name = "page", defaultValue = "0") Integer pageNo) {
-        int pageSize = 1;
+            @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize) {
         Page<Product> products = productService.getAllProduct2(pageNo, pageSize);
         return ResponseEntity.ok(products.getContent()) ;
     }
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProductByFilter(@RequestParam(defaultValue = "") String name,
+                                                               @RequestParam(defaultValue = "") String colour,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "1") int size){
+        Page<Product> products = productService.searchProductByFilter(name,colour,page,size);
+        return ResponseEntity.ok(products.getContent());
+    }
+
+
 
 
     @GetMapping("/products/{id}")
@@ -54,17 +67,6 @@ public class ProductController {
                              .map(product -> ResponseEntity.ok().body(product))
                              .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-//    @GetMapping("/{name}")
-//    public ResponseEntity<?> getProductByName(@PathVariable String name) {
-//        log.info("Request to get a product with name : " + name);
-//        if (name == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        return productService.getProductByName(name)
-//                             .map(product -> ResponseEntity.ok().body(product))
-//                             .orElseGet(() -> ResponseEntity.notFound().build());
-//    }
 
     @PostMapping("/products")
     public ResponseEntity<?> createProduct(@RequestBody Product product) {
@@ -111,6 +113,23 @@ public class ProductController {
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/products/price")
+    public ResponseEntity<ProductPriceDTO> getProductPrice(@RequestBody List<ProductsToBePriced> productsToBePriced) {
+        log.info("Incoming request to get product price with ids {}", productsToBePriced);
+        ProductPriceDTO productPriceDTO = productService.getProductPriceV2(productsToBePriced);
+        log.info("Response for product price {}", productPriceDTO);
+        return ResponseEntity.ok(productPriceDTO);
+    }
+
+    //endpoint to sell product
+    @PostMapping("/products/sell")
+    public ResponseEntity<Sales> sellProducts(@Valid @RequestBody SellProductsDTO sellProductsDTO) {
+        log.info("Incoming request to sell products {}", sellProductsDTO);
+        Sales sales = productService.sellProduct(sellProductsDTO);
+        log.info("Response for sell product {}", sales);
+        return ResponseEntity.ok(sales);
     }
 }
 

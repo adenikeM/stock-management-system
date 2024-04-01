@@ -29,15 +29,15 @@ public class Validation {
                              .body(buildErrorResponse("ID cannot be null, Id = "
                                      + user.getId(), HttpStatus.BAD_REQUEST));
     }
-    public static ResponseEntity<?> validateCreateSaleRequest(Sale sale) {
+    public static ResponseEntity<?> validateCreateSaleRequest(Sales sales) {
         return ResponseEntity.badRequest()
                              .body(buildErrorResponse("ID should be null, Id = "
-                                     + sale.getId(), HttpStatus.BAD_REQUEST));
+                                     + sales.getId(), HttpStatus.BAD_REQUEST));
     }
-    public static ResponseEntity<?> validateUpdateSale(Sale sale) {
+    public static ResponseEntity<?> validateUpdateSale(Sales sales) {
         return ResponseEntity.badRequest()
                              .body(buildErrorResponse("ID cannot be null, Id = "
-                                     + sale.getId(), HttpStatus.BAD_REQUEST));
+                                     + sales.getId(), HttpStatus.BAD_REQUEST));
     }
     public static ResponseEntity<?> validateCreateProductCategoryRequest(ProductCategory productCategory) {
         return ResponseEntity.badRequest()
