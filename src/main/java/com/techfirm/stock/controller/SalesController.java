@@ -28,8 +28,9 @@ public class SalesController {
 
     @GetMapping("/v2/sales")
     public ResponseEntity<List<Sales>> getAllSale2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-        int pageSize = 1;
+            @RequestParam(name = "pageNo", defaultValue = "0") int pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0") int pageSize){
+
         Page<Sales> sales = salesService.getAllSale2(pageNo, pageSize);
         return ResponseEntity.ok(sales.getContent());
     }

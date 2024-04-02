@@ -42,18 +42,18 @@ public class ProductController {
             @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize) {
         Page<Product> products = productService.getAllProduct2(pageNo, pageSize);
-        return ResponseEntity.ok(products.getContent()) ;
-    }
-    @GetMapping("/products/search")
-    public ResponseEntity<List<Product>> searchProductByFilter(@RequestParam(defaultValue = "") String name,
-                                                               @RequestParam(defaultValue = "") String colour,
-                                                               @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "1") int size){
-        Page<Product> products = productService.searchProductByFilter(name,colour,page,size);
         return ResponseEntity.ok(products.getContent());
     }
 
-
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProductByFilter(@RequestParam(defaultValue = "") String name,
+                                                               @RequestParam(defaultValue = "") String colour,
+                                                               @RequestParam(defaultValue = "") String size,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "1") int pageSize) {
+        Page<Product> products = productService.searchProductByFilter(name, colour, size, page, pageSize);
+        return ResponseEntity.ok(products.getContent());
+    }
 
 
     @GetMapping("/products/{id}")
@@ -102,8 +102,9 @@ public class ProductController {
                     "Product with id " + product.getId() + "doesn't exist, Enter correct product id", BAD_REQUEST));
         }
     }
+
     @PutMapping("/v2/products/{id}")
-    public ResponseEntity<?> updateProductV2(@Valid @RequestBody ProductDTO updateProductDTO, @PathVariable Long id){
+    public ResponseEntity<?> updateProductV2(@Valid @RequestBody ProductDTO updateProductDTO, @PathVariable Long id) {
         log.info("Incoming request to update product v2 with id {} and payload {}", id, updateProductDTO);
         Product updatedProductV2 = productService.updateProductV2(id, updateProductDTO);
         return ResponseEntity.ok(updatedProductV2);
@@ -115,7 +116,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/products/price")
+    @PostMapping("/products/price")
     public ResponseEntity<ProductPriceDTO> getProductPrice(@RequestBody List<ProductsToBePriced> productsToBePriced) {
         log.info("Incoming request to get product price with ids {}", productsToBePriced);
         ProductPriceDTO productPriceDTO = productService.getProductPriceV2(productsToBePriced);

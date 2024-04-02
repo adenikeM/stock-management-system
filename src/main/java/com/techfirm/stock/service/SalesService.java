@@ -34,20 +34,7 @@ public class SalesService {
     public Optional<Sales> getSaleById(Long id) {
         return salesRepository.findById(Math.toIntExact(id));
     }
-//    public Sales createSale(Sales sales){
-//        saleRepository.save(sales);
-//    }
-//    public Sales updateSale(Sales sales, ) {
-//        Long SaleId = sales.getId();
-//        if (SaleId == null) {
-//            throw new IllegalArgumentException("Sales id cannot be null");}
-//        Product retrievedProduct = productService.getProduct()
-//        if (sales.getQuantitySold() < retrievedProduct.getAvailableQuantity()) {
-//                throw new IllegalArgumentException("No enough product quantity");
-//            }
-//           Integer Quantity = retrievedProduct.getAvailableQuantity() - sales.getQuantitySold();
-//        return saleRepository.save(sales);
-//    }
+//
 
     public void deleteSale(Long id) {
         salesRepository.findById(Math.toIntExact(id));

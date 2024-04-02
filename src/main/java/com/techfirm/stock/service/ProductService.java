@@ -51,9 +51,9 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Page<Product> searchProductByFilter(String name, String colour,  int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-        return productRepository.findByNameAndColour(name, colour,  pageable);
+    public Page<Product> searchProductByFilter(String name, String colour, String size,  int page, int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return productRepository.findByNameAndColourAndSize(name, colour, size, pageable);
     }
 
     public Optional<Product> getProduct(Long id) {

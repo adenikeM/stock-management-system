@@ -17,6 +17,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByIdIn(@NonNull List<Long> ids);
-    @Query
-    Page<Product> findByNameAndColour(String name, String colour,  Pageable pageable);
+
+    String KEYWORD = "select p from Product p where UPPER(p.name) LIKE CONCAT('%',UPPER(?1),'%') and UPPER( p.colour) LIKE CONCAT( '%',UPPER(?2),'%') and UPPER( p.size) LIKE  CONCAT('%',UPPER(?3),'%')";
+    @Query(KEYWORD)
+    Page<Product> findByNameAndColourAndSize(String name, String colour, String size, Pageable pageable);
 }

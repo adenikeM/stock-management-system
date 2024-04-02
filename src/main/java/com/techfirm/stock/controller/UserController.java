@@ -32,12 +32,23 @@ public class UserController {
 
     @GetMapping("/v2/users")
     public ResponseEntity<List<User>> getAllUser2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-        int pageSize = 2;
-        Page<User> users = userService.getAllUser2(pageNo,pageSize);
+            @RequestParam(name = "pageNo", defaultValue = "0") int pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0") int pageSize) {
+
+        Page<User> users = userService.getAllUser2(pageNo, pageSize);
         return ResponseEntity.ok(users.getContent());
     }
 
+    @GetMapping("/users/search")
+    public ResponseEntity<List<User>> searchUserByFilter(
+            @RequestParam(defaultValue = "") String firstName,
+            @RequestParam(defaultValue = "") String userName,
+            @RequestParam(defaultValue = "") String password,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int size) {
+        Page<User> users = userService.searchUserByFilter(firstName, userName, password, page, size);
+        return ResponseEntity.ok(users.getContent());
+    }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserByID(@PathVariable Integer id) {

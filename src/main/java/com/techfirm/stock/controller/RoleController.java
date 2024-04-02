@@ -34,8 +34,9 @@ public class RoleController {
 
     @GetMapping("v2/roles")
     public ResponseEntity<List<Role>> getAllRole2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-        int pageSize = 2;
+            @RequestParam(name = "pageNo", defaultValue = "0") int pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0") int pageSize){
+
         Page<Role> roles = roleService.getAllRole2(pageNo,pageSize);
         return ResponseEntity.ok(roles.getContent());
     }
