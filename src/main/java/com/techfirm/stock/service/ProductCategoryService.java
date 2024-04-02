@@ -38,13 +38,14 @@ public class ProductCategoryService {
         return productCategoryRepository.findAll(pageable);
     }
 
+    public Page<ProductCategory> findByCategoryNameAndLocationContainsIgnoreCase(String categoryName, Location location, int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return productCategoryRepository.findByCategoryNameAndLocationContainsIgnoreCase(categoryName,location,pageable);
+    }
+
     public Optional<ProductCategory> getProductCategoryById(Long id) {
         return productCategoryRepository.findById(id);
     }
-
-//    public Optional<ProductCategory> getProductCategoryByName(String name) {
-//        return Optional.of((ProductCategory) productCategoryRepository.findAll());
-//    }
 
     public ProductCategory createProductCategory(ProductCategory productCategory) {
         Location productLocation = locationService.createLocation (productCategory.getLocation());

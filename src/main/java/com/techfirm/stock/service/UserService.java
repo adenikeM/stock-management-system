@@ -35,6 +35,11 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+    public Page<User> searchUserByFilter(String firstName, String userName, String password, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findByFirstNameAndUserNameAndPassword(firstName, userName, password, pageable);
+    }
+
     public Optional<User> getUser(Integer id) {
         return userRepository.findById(id);
     }

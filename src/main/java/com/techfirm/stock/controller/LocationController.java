@@ -32,8 +32,9 @@ public class LocationController {
 
     @GetMapping("/v2/locations")
     public ResponseEntity<List<Location>> getAllLocation2(
-            @RequestParam(name = "page", defaultValue = "0") int pageNo){
-      int pageSize = 2;
+            @RequestParam(name = "pageNo", defaultValue = "0") int pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0") int pageSize){
+
         Page<Location> locations = locationService.getAllLocation2(pageNo, pageSize);
         return ResponseEntity.ok(locations.getContent());
     }

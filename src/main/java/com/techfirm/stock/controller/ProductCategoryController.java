@@ -1,5 +1,6 @@
 package com.techfirm.stock.controller;
 
+import com.techfirm.stock.model.Location;
 import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.model.dto.ProductCategoryDTO;
@@ -36,12 +37,22 @@ public class ProductCategoryController {
 
     @GetMapping("/v2/category")
     public ResponseEntity<List<ProductCategory>> getAllProductCategory2(
-            @RequestParam(name = "page", defaultValue = "0" ) Integer pageNo){
-        int pageSize = 1;
+            @RequestParam(name = "pageNo", defaultValue = "0" ) Integer pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "0" ) Integer pageSize) {
         Page<ProductCategory> category = productCategoryService.getAllProductCategory2(pageNo, pageSize);
         return ResponseEntity.ok(category.getContent());
-
     }
+
+    @GetMapping("/category/search")
+    public ResponseEntity<List<ProductCategory>> findByCategoryNameAndLocationContainsIgnoreCase(
+            @RequestParam(defaultValue = "") String categoryName,
+            @RequestParam(defaultValue = "") Location location,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int size){
+        Page<ProductCategory> category = productCategoryService.findByCategoryNameAndLocationContainsIgnoreCase(categoryName,location,page,size);
+        return ResponseEntity.ok(category.getContent());
+    }
+
 
     @GetMapping("/category/{id}")
     public ResponseEntity<?> getProductCategoryByID(@PathVariable Integer id) {
