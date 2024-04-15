@@ -43,16 +43,6 @@ public class ProductCategoryController {
         return ResponseEntity.ok(category.getContent());
     }
 
-    @GetMapping("/category/search")
-    public ResponseEntity<List<ProductCategory>> findByCategoryNameAndLocationContainsIgnoreCase(
-            @RequestParam(defaultValue = "") String categoryName,
-            @RequestParam(defaultValue = "") Location location,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "1") int size){
-        Page<ProductCategory> category = productCategoryService.findByCategoryNameAndLocationContainsIgnoreCase(categoryName,location,page,size);
-        return ResponseEntity.ok(category.getContent());
-    }
-
 
     @GetMapping("/category/{id}")
     public ResponseEntity<?> getProductCategoryByID(@PathVariable Integer id) {
@@ -66,16 +56,6 @@ public class ProductCategoryController {
                                      .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-//    @GetMapping("/{name}")
-//    public ResponseEntity<?> getProductByName(@PathVariable String name) {
-//        log.info("Request to get a product category with name : " + name);
-//        if (name == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        return productCategoryService.getProductCategoryByName(name)
-//                                     .map(productCategory -> ResponseEntity.ok().body(productCategory))
-//                                     .orElseGet(() -> ResponseEntity.notFound().build());
-//    }
 
     @PostMapping("/category")
     public ResponseEntity<?> createProductCategory(@RequestBody ProductCategory productCategory) {

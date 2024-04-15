@@ -53,13 +53,12 @@ public class ProductService {
 
     public Page<Product> searchProductByFilter(String name, String colour, String size,  int page, int pageSize){
         Pageable pageable = PageRequest.of(page, pageSize);
-        return productRepository.findByNameAndColourAndSize(name, colour, size, pageable);
+        return productRepository.findByNameContainingOrColourContainingOrSizeContaining(name, colour, size, pageable);
     }
 
     public Optional<Product> getProduct(Long id) {
         return productRepository.findById(id);
     }
-
 
     public Product createProduct(Product product) {
         ProductCategory category = productCategoryService.createProductCategory(product.getProductCategory());
@@ -86,6 +85,16 @@ public class ProductService {
         product.setProductCategory(category);
 
         return Optional.of(productRepository.save(product));
+    }
+
+    public List<Product> updateMultipleQuantityById(List<Product> products){
+        for(Product product : products){
+            int updatedQuantity = productRepository.updateAvailableQuantityById(product.getAvailableQuantity(), product.getId());
+            if(updatedQuantity == 0){
+                throw new IllegalArgumentException("Product id not found ");
+            }
+        }
+        return products;
     }
 
     public void deleteProduct(Long id) {
