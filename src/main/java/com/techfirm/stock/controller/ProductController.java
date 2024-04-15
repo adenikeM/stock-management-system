@@ -1,7 +1,6 @@
 package com.techfirm.stock.controller;
 
 import com.techfirm.stock.model.Product;
-import com.techfirm.stock.model.ProductCategory;
 import com.techfirm.stock.model.Sales;
 import com.techfirm.stock.model.dto.ProductDTO;
 import com.techfirm.stock.model.dto.ProductPriceDTO;
@@ -109,6 +108,10 @@ public class ProductController {
         Product updatedProductV2 = productService.updateProductV2(id, updateProductDTO);
         return ResponseEntity.ok(updatedProductV2);
     }
+    @PutMapping("/products/update")
+    public ResponseEntity<?> updateMultipleQuantityById(@RequestBody List<Product> products){
+        return  ResponseEntity.ok(productService.updateMultipleQuantityById(products));
+    }
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
@@ -120,8 +123,7 @@ public class ProductController {
     public ResponseEntity<ProductPriceDTO> getProductPrice(@RequestBody List<ProductsToBePriced> productsToBePriced) {
         log.info("Incoming request to get product price with ids {}", productsToBePriced);
         ProductPriceDTO productPriceDTO = productService.getProductPriceV2(productsToBePriced);
-        log.info("Response for product price {}", productPriceDTO);
-        return ResponseEntity.ok(productPriceDTO);
+        log.info("Response for product price {}", productPriceDTO);         return ResponseEntity.ok(productPriceDTO);
     }
 
     //endpoint to sell product

@@ -1,5 +1,6 @@
 package com.techfirm.stock.repository;
 
+import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +10,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    String KEYWORD =  "select b from User b where UPPER(b.firstName) LIKE CONCAT('%',UPPER(?1),'%') and UPPER( b.userName) LIKE CONCAT( '%',UPPER(?2),'%') and UPPER( b.password) LIKE  CONCAT('%',UPPER(?3),'%')";
-    @Query(KEYWORD)
-    Page<User> findByFirstNameAndUserNameAndPassword(String firstName, String userName, String password, Pageable pageable);
+//    @Query("select u from User u where u.firstName LIKE %:firstName%")
+//    Page<User> findByFirstNameContaining(String firstName, Pageable pageable);
+//    @Query("select u from User u where  u.userName LIKE %:userName%")
+//    Page<User> findByUserNameContaining(String userName, Pageable pageable);
+//    @Query("select u from User u where  u.password LIKE %:password%")
+//    Page<User> findByPasswordContaining(String password, Pageable pageable);
+@Query("select u from User u where UPPER(u.firstName) LIKE CONCAT('%',UPPER(?1),'%') and UPPER( u.userName) LIKE CONCAT( '%',UPPER(?2),'%') and UPPER(u.password) LIKE  CONCAT('%',UPPER(?3),'%')")
+Page<User> findByFirstNameContainingOrUserNameContainingOrPasswordContaining(String firstName, String userName, String password, Pageable pageable);
 }
+

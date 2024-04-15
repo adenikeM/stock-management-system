@@ -35,9 +35,16 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public Page<User> searchUserByFilter(String firstName, String userName, String password, int page, int size){
+    public Page<User> searchUserByFilter(String firstName, String userName, String password, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findByFirstNameAndUserNameAndPassword(firstName, userName, password, pageable);
+//        if (firstName != null) {
+//            return userRepository.findByFirstNameContaining(firstName, pageable);
+//        } else if (userName != null) {
+//            return userRepository.findByUserNameContaining(userName, pageable);
+//        } else {
+//            return userRepository.findByPasswordContaining(password, pageable);
+//        }
+        return userRepository.findByFirstNameContainingOrUserNameContainingOrPasswordContaining(firstName,userName,password,pageable);
     }
 
     public Optional<User> getUser(Integer id) {
