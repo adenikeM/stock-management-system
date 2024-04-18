@@ -106,9 +106,9 @@ public class ProductController {
         return ResponseEntity.ok(updatedProductV2);
     }
     @PostMapping("/products/increase")
-    public ResponseEntity<?> increaseStock(@RequestBody List<UpdatedStockDTO> updatedStockDTOS){
-        log.info("Request to increase stock  => {}", updatedStockDTOS);
-        return  ResponseEntity.ok(productService.increaseStock(updatedStockDTOS));
+    public ResponseEntity<?> increaseStock(@RequestBody List<UpdateStockDTO> updateStockDTOS){
+        log.info("Request to increase stock  => {}", updateStockDTOS);
+        return  ResponseEntity.ok(productService.increaseStock(updateStockDTOS));
     }
 
 
