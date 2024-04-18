@@ -2,10 +2,7 @@ package com.techfirm.stock.controller;
 
 import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.Sales;
-import com.techfirm.stock.model.dto.ProductDTO;
-import com.techfirm.stock.model.dto.ProductPriceDTO;
-import com.techfirm.stock.model.dto.ProductsToBePriced;
-import com.techfirm.stock.model.dto.SellProductsDTO;
+import com.techfirm.stock.model.dto.*;
 import com.techfirm.stock.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -108,10 +105,12 @@ public class ProductController {
         Product updatedProductV2 = productService.updateProductV2(id, updateProductDTO);
         return ResponseEntity.ok(updatedProductV2);
     }
-    @PutMapping("/products/update")
-    public ResponseEntity<?> updateMultipleQuantityById(@RequestBody List<Product> products){
-        return  ResponseEntity.ok(productService.updateMultipleQuantityById(products));
+    @PostMapping("/products/increase")
+    public ResponseEntity<?> increaseStock(@RequestBody List<UpdatedStockDTO> updatedStockDTOS){
+        log.info("Request to increase stock  => {}", updatedStockDTOS);
+        return  ResponseEntity.ok(productService.increaseStock(updatedStockDTOS));
     }
+
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {

@@ -1,11 +1,7 @@
 package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.*;
-import com.techfirm.stock.model.dto.ProductDTO;
-import com.techfirm.stock.model.dto.ProductPrice;
-import com.techfirm.stock.model.dto.ProductPriceDTO;
-import com.techfirm.stock.model.dto.ProductsToBePriced;
-import com.techfirm.stock.model.dto.SellProductsDTO;
+import com.techfirm.stock.model.dto.*;
 import com.techfirm.stock.repository.AddressRepository;
 import com.techfirm.stock.repository.CustomerInfoRepository;
 import com.techfirm.stock.repository.ProductRepository;
@@ -27,9 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.techfirm.stock.utils.ObjectMapper.mapCreateProductDTOToProduct;
 import static com.techfirm.stock.utils.ObjectMapper.mapUpdateProductDTOToProduct;
+import static org.hibernate.Hibernate.map;
 
 @Service
 @Slf4j
@@ -87,14 +85,27 @@ public class ProductService {
         return Optional.of(productRepository.save(product));
     }
 
-    public List<Product> updateMultipleQuantityById(List<Product> products){
-        for(Product product : products){
-            int updatedQuantity = productRepository.updateAvailableQuantityById(product.getAvailableQuantity(), product.getId());
-            if(updatedQuantity == 0){
-                throw new IllegalArgumentException("Product id not found ");
+    public List<Product> increaseStock(List<UpdatedStockDTO> updatedStockDTOS){
+       List<Long> idList = updatedStockDTOS
+               .stream().map(UpdatedStockDTO::getId).toList();
+       List<Product> products = productRepository.findAllById(idList);
+        if(products.isEmpty()){
+            throw new IllegalArgumentException("product id is invalid");
+        }
+        Map<Product, Integer> productMap = new HashMap<>();
+
+        for(UpdatedStockDTO updatedStockDTO : updatedStockDTOS){
+        for (Product product : products){
+            if(Objects.equals(updatedStockDTO.getId(), product.getId())){
+                int incrementQuantity =  updatedStockDTO.getIncrementQuantity();
+                productMap.put(product, incrementQuantity);
             }
         }
-        return products;
+        }
+        productMap.forEach((product, incrementQuantity) -> {
+            product.setAvailableQuantity(product.getAvailableQuantity() + incrementQuantity);
+        });
+        return productRepository.saveAll(products);
     }
 
     public void deleteProduct(Long id) {

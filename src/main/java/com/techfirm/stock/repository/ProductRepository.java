@@ -10,6 +10,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -18,8 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p where UPPER(p.name) LIKE CONCAT('%',UPPER(?1),'%') and UPPER( p.colour) LIKE CONCAT( '%',UPPER(?2),'%') and UPPER( p.size) LIKE  CONCAT('%',UPPER(?3),'%')")
     Page<Product> findByNameContainingOrColourContainingOrSizeContaining(String name, String colour, String size, Pageable pageable);
 
-   @Modifying
-   @Transactional
-   @Query("update Product p set p.availableQuantity=(p.availableQuantity + :availableQuantity) WHERE p.id=:id")
-    int updateAvailableQuantityById(Integer availableQuantity,Long id);
+
+//   @Modifying
+//   @Query("update Product p set p.availableQuantity=(p.availableQuantity + :availableQuantity) WHERE p.id=:id")
+//    Product updateAvailableQuantityById(Integer availableQuantity,Long id);
 }
