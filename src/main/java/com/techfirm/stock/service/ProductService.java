@@ -47,6 +47,10 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Page<Product> getAllProduct3(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
     public Page<Product> searchProductByFilter(String name, String colour, String size,  int page, int pageSize){
         Pageable pageable = PageRequest.of(page, pageSize);
         return productRepository.findByNameContainingOrColourContainingOrSizeContaining(name, colour, size, pageable);
@@ -84,15 +88,15 @@ public class ProductService {
     }
 
     public List<Product> increaseStock(List<UpdateStockDTO> updateStockDTOS) {
-        List<Long> idList = updateStockDTOS
-                .stream().map(UpdateStockDTO::getId).toList();
-        List<Product> products = productRepository.findAllById(idList);
+        List<Long> productIdList = updateStockDTOS
+                .stream().map(UpdateStockDTO::getProductId).toList();
+        List<Product> products = productRepository.findAllById(productIdList);
         if (products.isEmpty()) {
             throw new IllegalArgumentException("product id is invalid");
         }
         for (UpdateStockDTO updateStockDTO : updateStockDTOS) {
             for (Product product : products) {
-                if (Objects.equals(updateStockDTO.getId(), product.getId())) {
+                if (Objects.equals(updateStockDTO.getProductId(), product.getId())) {
                     int incrementQuantity = updateStockDTO.getQuantityToBeAdded();
                     product.setAvailableQuantity(product.getAvailableQuantity() + incrementQuantity);
                 }
