@@ -23,11 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static com.techfirm.stock.utils.ObjectMapper.mapCreateProductDTOToProduct;
 import static com.techfirm.stock.utils.ObjectMapper.mapUpdateProductDTOToProduct;
-import static org.hibernate.Hibernate.map;
 
 @Service
 @Slf4j
@@ -46,6 +44,10 @@ public class ProductService {
 
     public Page<Product> getAllProduct2(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return productRepository.findAll(pageable);
+    }
+
+    public Page<Product> getAllProduct3(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 
@@ -85,26 +87,21 @@ public class ProductService {
         return Optional.of(productRepository.save(product));
     }
 
-    public List<Product> increaseStock(List<UpdatedStockDTO> updatedStockDTOS){
-       List<Long> idList = updatedStockDTOS
-               .stream().map(UpdatedStockDTO::getId).toList();
-       List<Product> products = productRepository.findAllById(idList);
-        if(products.isEmpty()){
+    public List<Product> increaseStock(List<UpdateStockDTO> updateStockDTOS) {
+        List<Long> productIdList = updateStockDTOS
+                .stream().map(UpdateStockDTO::getProductId).toList();
+        List<Product> products = productRepository.findAllById(productIdList);
+        if (products.isEmpty()) {
             throw new IllegalArgumentException("product id is invalid");
         }
-        Map<Product, Integer> productMap = new HashMap<>();
-
-        for(UpdatedStockDTO updatedStockDTO : updatedStockDTOS){
-        for (Product product : products){
-            if(Objects.equals(updatedStockDTO.getId(), product.getId())){
-                int incrementQuantity =  updatedStockDTO.getIncrementQuantity();
-                productMap.put(product, incrementQuantity);
+        for (UpdateStockDTO updateStockDTO : updateStockDTOS) {
+            for (Product product : products) {
+                if (Objects.equals(updateStockDTO.getProductId(), product.getId())) {
+                    int incrementQuantity = updateStockDTO.getQuantityToBeAdded();
+                    product.setAvailableQuantity(product.getAvailableQuantity() + incrementQuantity);
+                }
             }
         }
-        }
-        productMap.forEach((product, incrementQuantity) -> {
-            product.setAvailableQuantity(product.getAvailableQuantity() + incrementQuantity);
-        });
         return productRepository.saveAll(products);
     }
 

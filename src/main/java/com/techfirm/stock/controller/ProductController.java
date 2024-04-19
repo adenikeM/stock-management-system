@@ -7,6 +7,7 @@ import com.techfirm.stock.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,12 @@ public class ProductController {
             @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize) {
         Page<Product> products = productService.getAllProduct2(pageNo, pageSize);
+        return ResponseEntity.ok(products.getContent());
+    }
+
+     @GetMapping("/v3/products")
+    public ResponseEntity<List<Product>> getAllProductWithPageable(Pageable pageable) {
+        Page<Product> products = productService.getAllProduct3(pageable);
         return ResponseEntity.ok(products.getContent());
     }
 
@@ -106,9 +113,9 @@ public class ProductController {
         return ResponseEntity.ok(updatedProductV2);
     }
     @PostMapping("/products/increase")
-    public ResponseEntity<?> increaseStock(@RequestBody List<UpdatedStockDTO> updatedStockDTOS){
-        log.info("Request to increase stock  => {}", updatedStockDTOS);
-        return  ResponseEntity.ok(productService.increaseStock(updatedStockDTOS));
+    public ResponseEntity<?> increaseStock(@RequestBody List<UpdateStockDTO> updateStockDTOS){
+        log.info("Request to increase stock  => {}", updateStockDTOS);
+        return  ResponseEntity.ok(productService.increaseStock(updateStockDTOS));
     }
 
 
