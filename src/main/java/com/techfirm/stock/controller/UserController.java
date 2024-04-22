@@ -4,6 +4,7 @@ import com.techfirm.stock.model.User;
 import com.techfirm.stock.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,11 @@ public class UserController {
             @RequestParam(name = "pageSize", defaultValue = "0") int pageSize) {
 
         Page<User> users = userService.getAllUser2(pageNo, pageSize);
+        return ResponseEntity.ok(users.getContent());
+    }
+    @GetMapping("/v3/users")
+    public ResponseEntity<List<User>> getAllUsers3(Pageable pageable){
+        Page<User> users = userService.getAllUsers3(pageable);
         return ResponseEntity.ok(users.getContent());
     }
 

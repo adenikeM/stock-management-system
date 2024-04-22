@@ -9,6 +9,7 @@ import com.techfirm.stock.service.ProductCategoryService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,12 @@ public class ProductCategoryController {
             @RequestParam(name = "pageNo", defaultValue = "0" ) Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "0" ) Integer pageSize) {
         Page<ProductCategory> category = productCategoryService.getAllProductCategory2(pageNo, pageSize);
+        return ResponseEntity.ok(category.getContent());
+    }
+
+    @GetMapping("v3/category")
+    public ResponseEntity<List<ProductCategory>> getProductCategory3(Pageable pageable){
+        Page<ProductCategory> category = productCategoryService.getAllProductCategory3(pageable);
         return ResponseEntity.ok(category.getContent());
     }
 

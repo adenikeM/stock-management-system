@@ -26,7 +26,9 @@ public class LocationService {
         Pageable pageable = PageRequest.of(pageNo,pageSize);
         return locationRepository.findAll(pageable);
     }
-
+    public Page<Location> getAllLocation3(Pageable pageable){
+        return locationRepository.findAll(pageable);
+    }
     public Optional<Location> getLocationById(Long id) {
         return locationRepository.findById(id);
     }

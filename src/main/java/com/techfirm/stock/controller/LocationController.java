@@ -4,6 +4,7 @@ import com.techfirm.stock.model.Location;
 import com.techfirm.stock.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,11 @@ public class LocationController {
         Page<Location> locations = locationService.getAllLocation2(pageNo, pageSize);
         return ResponseEntity.ok(locations.getContent());
     }
-
+    @GetMapping("/v3/locations")
+    public ResponseEntity<List<Location>> getAllLocation3(Pageable pageable){
+        Page<Location> locations = locationService.getAllLocation3(pageable);
+        return ResponseEntity.ok(locations.getContent());
+    }
 
     @GetMapping("/locations/{id}")
     public ResponseEntity<?> getLocationByID(@PathVariable Long id) {
