@@ -30,11 +30,12 @@ public class SalesService {
         Pageable pageable = PageRequest.of(pageNo,pageSize);
         return salesRepository.findAll(pageable);
     }
-
+    public Page<Sales> getAllSales3(Pageable pageable){
+        return salesRepository.findAll(pageable);
+    }
     public Optional<Sales> getSaleById(Long id) {
         return salesRepository.findById(Math.toIntExact(id));
     }
-//
 
     public void deleteSale(Long id) {
         salesRepository.findById(Math.toIntExact(id));

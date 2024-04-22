@@ -6,6 +6,7 @@ import com.techfirm.stock.service.LocationService;
 import com.techfirm.stock.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,11 @@ public class RoleController {
         return ResponseEntity.ok(roles.getContent());
     }
 
+    @GetMapping("/v3/roles")
+    public ResponseEntity<List<Role>> getAllRole3(Pageable pageable ){
+        Page<Role> roles = roleService.getAllRole3(pageable);
+        return ResponseEntity.ok(roles.getContent());
+    }
     @GetMapping("/roles/{id}")
     public ResponseEntity<?> getRoleByID(@PathVariable Integer id) {
         log.info("Get Role id by " + id);

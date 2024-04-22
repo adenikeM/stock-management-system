@@ -5,6 +5,7 @@ import com.techfirm.stock.service.SalesService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,11 @@ public class SalesController {
         Page<Sales> sales = salesService.getAllSale2(pageNo, pageSize);
         return ResponseEntity.ok(sales.getContent());
     }
-
+    @GetMapping("/v3/sales")
+    public ResponseEntity<List<Sales>> getAllSales3(Pageable pageable){
+        Page<Sales> sales = salesService.getAllSales3(pageable);
+        return ResponseEntity.ok(sales.getContent());
+    }
 
     @GetMapping("/sales/{id}")
     public ResponseEntity<?> getSaleByID(@PathVariable Long id) {
