@@ -1,5 +1,7 @@
 package com.techfirm.stock.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -29,6 +31,11 @@ public class CustomerInfo {
 
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
+
+    @NotEmpty
+    @Email
+    private String email;
+
 
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "address_id")

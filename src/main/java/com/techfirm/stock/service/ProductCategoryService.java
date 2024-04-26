@@ -37,6 +37,9 @@ public class ProductCategoryService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return productCategoryRepository.findAll(pageable);
     }
+    public Page<ProductCategory> getAllProductCategory3(Pageable pageable){
+        return productCategoryRepository.findAll(pageable);
+    }
 
     public Optional<ProductCategory> getProductCategoryById(Long id) {
         return productCategoryRepository.findById(id);
