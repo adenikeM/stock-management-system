@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,7 +39,7 @@ public class ProductService {
     private final CustomerInfoRepository customerInfoRepository;
     private final SalesService salesService;
     private final AddressRepository addressRepository;
-
+    private final EmailService emailService;
     public List<Product> getAllProduct() {
         return productRepository.findAll();
     }
@@ -221,7 +223,7 @@ public class ProductService {
 
         //create customer info if not exist or retrieve if exist
         CustomerInfo customerInfo = sellProductsDTO.getCustomerInfo();
-        if(customerInfo.getId() == null) {
+        if (customerInfo.getId() == null) {
             Address address = addressRepository.save(customerInfo.getAddress());
             customerInfo.setAddress(address);
             customerInfo = customerInfoRepository.save(customerInfo);
@@ -263,17 +265,23 @@ public class ProductService {
 
         //build sales entity
         Sales sales = Sales.builder()
-                .customerInfo(customerInfo)
-                .products(updatedProducts)
-                .price(salesPrice)
-                .salesDate(LocalDateTime.now())
-                .totalQuantitySold(totalQuantitySold)
-                .build();
+                           .customerInfo(customerInfo)
+                           .products(updatedProducts)
+                           .price(salesPrice)
+                           .salesDate(LocalDateTime.now())
+                           .totalQuantitySold(totalQuantitySold)
+                           .build();
 
         //save sales entity and return
-        return salesService.createSale(sales);
+        Sales sale = salesService.createSale(sales);
+        //send mail to user
+        emailService.sendMail(EmailDetails.builder()
+                .recipient(customerInfo.getEmail())
+                .msgBody("Hello \n\n List of your order : \n" + productsToBeSold  )
+                .subject("This is your order")
+                .build());
+        return sale;
     }
-
     private static void ensureEnoughQuantityAndPrepareSalesData(List<Product> retrievedProducts, List<ProductsToBePriced> productsToBeSold, BigDecimal salesPrice, int totalQuantitySold) {
 
     }
