@@ -111,7 +111,9 @@ public class ProductService {
         ProductCategory productCategory = productCategoryService.getProductCategoryById(createProductDTO.getProductCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product category id " + createProductDTO.getProductCategoryId()));
         Product product = mapCreateProductDTOToProduct(createProductDTO, productCategory);
-        product.setSettings(createProductDTO.getSettings());
+        for(Map.Entry<String, String> entry : createProductDTO.getSettings().entrySet()){
+            product.addSetting(entry.getKey(), entry.getValue());
+        }
         return productRepository.save(product);
     }
 
@@ -126,7 +128,9 @@ public class ProductService {
 
         mapUpdateProductDTOToProduct(updateProductDTO, productCategory, retrievedProduct);
         log.info("Retrieved product after mapping {}", retrievedProduct);
-        retrievedProduct.setSettings(updateProductDTO.getSettings());
+        for(Map.Entry<String, String> entry : updateProductDTO.getSettings().entrySet()){
+            retrievedProduct.addSetting(entry.getKey(), entry.getValue());
+        }
         return productRepository.save(retrievedProduct);
     }
 
