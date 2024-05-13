@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public class ProductDTO {
@@ -28,4 +30,7 @@ public class ProductDTO {
 
     @NotNull(message = "product category id cannot be null")
     private Long productCategoryId;
+
+    private Map<String, String> settings = new HashMap<>();
+
 }

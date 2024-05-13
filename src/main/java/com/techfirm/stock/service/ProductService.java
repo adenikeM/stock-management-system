@@ -6,15 +6,15 @@ import com.techfirm.stock.repository.AddressRepository;
 import com.techfirm.stock.repository.CustomerInfoRepository;
 import com.techfirm.stock.repository.ProductRepository;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -40,6 +40,7 @@ public class ProductService {
     private final SalesService salesService;
     private final AddressRepository addressRepository;
     private final EmailService emailService;
+
     public List<Product> getAllProduct() {
         return productRepository.findAll();
     }
@@ -74,11 +75,6 @@ public class ProductService {
         if (productId == null) {
             throw new IllegalArgumentException("Product id must not be null");
         }
-//        Optional<Product> retrievedProductOptional = productRepository.findById(productId);
-//
-//        Product retrievedProduct = retrievedProductOptional
-//                .orElseThrow(() -> new IllegalArgumentException("Could not retrieve Product with id " + productId));
-
         Product retrievedProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Could not retrieve Product with id " + productId));
 
@@ -115,6 +111,7 @@ public class ProductService {
         ProductCategory productCategory = productCategoryService.getProductCategoryById(createProductDTO.getProductCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product category id " + createProductDTO.getProductCategoryId()));
         Product product = mapCreateProductDTOToProduct(createProductDTO, productCategory);
+        product.setSettings(createProductDTO.getSettings());
         return productRepository.save(product);
     }
 
@@ -129,6 +126,7 @@ public class ProductService {
 
         mapUpdateProductDTOToProduct(updateProductDTO, productCategory, retrievedProduct);
         log.info("Retrieved product after mapping {}", retrievedProduct);
+        retrievedProduct.setSettings(updateProductDTO.getSettings());
         return productRepository.save(retrievedProduct);
     }
 
@@ -159,9 +157,7 @@ public class ProductService {
         productMap.forEach((product, quantity) -> {
             BigDecimal price = product.getPrice().multiply(new BigDecimal(quantity));
             ProductPrice productPrice = new ProductPrice(product.getId(), quantity, price);
-
             productPriceList.add(productPrice);
-
             totalPriceArray[0] = totalPriceArray[0].add(price);
         });
 
@@ -272,7 +268,7 @@ public class ProductService {
                            .totalQuantitySold(totalQuantitySold)
                            .build();
 
-        //save sales entity and return
+        //save sales entity
         Sales sale = salesService.createSale(sales);
         //send mail to user
         emailService.sendMail(EmailDetails.builder()

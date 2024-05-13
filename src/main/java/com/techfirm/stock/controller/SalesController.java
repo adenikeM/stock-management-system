@@ -52,34 +52,6 @@ public class SalesController {
                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-//    @PostMapping("/sales")
-//    public ResponseEntity<?> createSale(@RequestBody Sales sale) {
-//        log.info("Request to create sale => {}", sale);
-//        if (sale.getId() != null) {
-//            log.info("user => {}", sale);
-//            return ResponseEntity.badRequest()
-//                                 .body(buildErrorResponse("ID should be null, Id = "
-//                                         + sale.getId(), HttpStatus.BAD_REQUEST));
-//        }
-//        return ResponseEntity.ok().body(saleService.createSale(sale));
-//    }
-
-//    @PutMapping("/sales")
-//    public ResponseEntity<?> updateSale(@RequestBody Sales sale) {
-//        if (sale.getId() == null) {
-//            return ResponseEntity.badRequest()
-//                                 .body(buildErrorResponse("ID cannot be null, Id = "
-//                                         + sale.getId(), HttpStatus.BAD_REQUEST));
-//        }
-//        Sales updatedSale = saleService.UpdateSale(new ProductSaleDTO());
-//        if (updatedSale != null) {
-//            return ResponseEntity.ok(updatedSale);
-//        } else {
-//            return ResponseEntity.badRequest().body(buildErrorResponse(
-//                    "Sales with id " + sale.getId() + "doesn't exist, Input correct Sales ID ", BAD_REQUEST));
-//        }
-//    }
-
     @DeleteMapping("/sales/{id}")
     public ResponseEntity<Sales> deleteSale(@PathVariable Long id) {
         salesService.deleteSale(id);

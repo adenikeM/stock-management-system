@@ -53,20 +53,6 @@ public class SalesService {
 
 
 
-//    public static void sell(Product product, ProductSaleDTO productSaleDTO){
-//        product = productService.getProduct(product.getId());
-//        if(product.getId() == null){
-//            throw new IllegalArgumentException("Product not available");
-//            if(product.getAvailableQuantity() >= productSaleDTO.getQuantity()){
-//                captureSales(id, name, availableQuantity, price, manufactureDate, expiryDate, size,  productCategory);
-//            }
-//        }
-//    }
-//    private static void captureSales(Long id, String name, int availableQuantity, BigDecimal price, LocalDate manufactureDate, LocalDate expiryDate, String size, ProductCategory productCategory) throws IOException {
-//        LocalDate Date = LocalDate.now();
-//        Product product = new Product(id, name, availableQuantity, price, manufactureDate,
-//                expiryDate, size, productCategory);
-//        PRODUCTSALES_LIST.add(product);
 
 
 
