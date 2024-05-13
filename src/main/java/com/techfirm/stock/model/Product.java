@@ -50,6 +50,16 @@ public class Product implements Serializable {
     @MapKeyColumn(name = "settings_key")
     @Column(name = "settings_value")
     @CollectionTable(name = "product_settings", joinColumns = @JoinColumn(name = "product_id"))
-    private  Map<String, String> settings = new HashMap<>();
+    private final Map<String, String> settings = new HashMap<>();
+
+    //method for adding custom property
+    public void addSetting(String key, String value) {
+        this.settings.put(key, value);
+    }
+
+    // Getter for settings
+    public Map<String, String> getSettings() {
+        return settings;
+    }
 
 }

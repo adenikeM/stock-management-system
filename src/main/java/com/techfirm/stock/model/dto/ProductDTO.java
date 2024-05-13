@@ -31,6 +31,6 @@ public class ProductDTO {
     @NotNull(message = "product category id cannot be null")
     private Long productCategoryId;
 
-    private Map<String, String> settings = new HashMap<>();
+    private final Map<String, String> settings = new HashMap<>();
 
 }
