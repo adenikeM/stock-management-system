@@ -6,13 +6,12 @@ import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Data
@@ -47,7 +46,10 @@ public class Product implements Serializable {
     @ManyToOne
     private ProductCategory productCategory;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @MapKeyColumn(name = "settings_key")
+    @Column(name = "settings_value")
+    @CollectionTable(name = "product_settings", joinColumns = @JoinColumn(name = "product_id"))
+    private  Map<String, String> settings = new HashMap<>();
 
-    public Product(Long id, String name, int availableQuantity, java.math.BigDecimal price, java.time.LocalDate manufactureDate, java.time.LocalDate expiryDate, String size, ProductCategory productCategory) {
-    }
 }
