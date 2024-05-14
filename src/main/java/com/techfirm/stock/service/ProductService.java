@@ -6,9 +6,7 @@ import com.techfirm.stock.repository.AddressRepository;
 import com.techfirm.stock.repository.CustomerInfoRepository;
 import com.techfirm.stock.repository.ProductRepository;
 
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +57,7 @@ public class ProductService {
         return productRepository.findByNameContainingOrColourContainingOrSizeContaining(name, colour, size, pageable);
     }
 
-    public Optional<Product> getProduct(Long id) {
+    public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 

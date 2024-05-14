@@ -47,7 +47,6 @@ public class Product implements Serializable {
     @ManyToOne
     private ProductCategory productCategory;
 
-    // Getter for settings
     @Getter
     @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name = "settings_key")

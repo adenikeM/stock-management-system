@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -19,8 +20,15 @@ public class ReturnedSales implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+
+    @ManyToOne
+    @JoinColumn(name = "sales_id")
     private Sales originalSale;
+
+    @Getter
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "customer_info_id")
@@ -37,5 +45,9 @@ public class ReturnedSales implements Serializable {
 
     @Column(name = "return_date")
     private LocalDateTime returnDate = LocalDateTime.now();
+
+    public Sales getSales() {
+        return this.originalSale;
+    }
 
 }
