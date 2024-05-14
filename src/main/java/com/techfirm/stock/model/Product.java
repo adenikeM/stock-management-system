@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -46,10 +47,16 @@ public class Product implements Serializable {
     @ManyToOne
     private ProductCategory productCategory;
 
+    @Getter
     @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name = "settings_key")
     @Column(name = "settings_value")
     @CollectionTable(name = "product_settings", joinColumns = @JoinColumn(name = "product_id"))
-    private  Map<String, String> settings = new HashMap<>();
+    private final Map<String, String> settings = new HashMap<>();
+
+    //method for adding custom property
+    public void addSetting(String key, String value) {
+        this.settings.put(key, value);
+    }
 
 }

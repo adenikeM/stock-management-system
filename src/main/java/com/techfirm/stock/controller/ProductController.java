@@ -66,7 +66,7 @@ public class ProductController {
             ResponseEntity.badRequest().body(
                     buildErrorResponse("Product id cannot be less than 1", BAD_REQUEST));
         }
-        return productService.getProduct(id)
+        return productService.getProductById(id)
                              .map(product -> ResponseEntity.ok().body(product))
                              .orElseGet(() -> ResponseEntity.notFound().build());
     }

@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @Slf4j
 public class EmailServiceImpl implements EmailService {
@@ -36,5 +38,18 @@ public class EmailServiceImpl implements EmailService {
             log.error("Error occurred while sending email: {}", e.getMessage());
 
         }
+    }
+
+    @Override
+    public void sendRefundEmail(String customerEmail, String productName, BigDecimal refundAmount) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("horythorkehadenike@gmail.com");
+        message.setTo(customerEmail);
+        message.setSubject("Product Return and Refund Confirmation");
+        message.setText("Dear Customer, \n\n"
+                + "We have received your returned product: " + productName + ".\n"
+                + "The refund amount of " + refundAmount + " has been processed and confirm"
+                + "Thank you for shopping with us. \n\n"
+                + "Best regards");
     }
 }
