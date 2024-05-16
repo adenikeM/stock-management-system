@@ -1,8 +1,12 @@
 package com.techfirm.stock.service;
 
+import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.ReturnedSales;
 import com.techfirm.stock.model.Sales;
+import com.techfirm.stock.repository.ReturnedSalesRepository;
 import com.techfirm.stock.repository.SalesRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SalesService {
     private final SalesRepository salesRepository;
+    private final ReturnedSalesRepository returnedSalesRepository;
 
     public List<Sales> getAllSale() {
         return salesRepository.findAll();
@@ -34,11 +39,11 @@ public class SalesService {
         return salesRepository.findAll(pageable);
     }
     public Optional<Sales> getSaleById(Long id) {
-        return salesRepository.findById(Math.toIntExact(id));
+        return salesRepository.findById(id);
     }
 
     public void deleteSale(Long id) {
-        salesRepository.findById(Math.toIntExact(id));
+        salesRepository.findById(id);
     }
 
     public Sales createSale(Sales sales) {
@@ -46,9 +51,9 @@ public class SalesService {
         if (!Objects.isNull(sales.getId())) {
             throw new IllegalArgumentException("New sales cannot have id");
         }
-
         return salesRepository.save(sales);
     }
+
 }
 
 

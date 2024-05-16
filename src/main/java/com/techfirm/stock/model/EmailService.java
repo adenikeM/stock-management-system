@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 public interface EmailService {
     void sendMail(EmailDetails details);
 
-    void sendRefundEmail(String customerEmail, String productName, BigDecimal refundAmount);
+    void sendRefundEmail(MailDetails details);
 }

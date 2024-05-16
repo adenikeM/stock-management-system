@@ -32,17 +32,17 @@ INSERT INTO product(price, product_category_id, available_quantity, expiry_date,
                     colour, name, size)
 VALUES ('3000.00', '1', '30', '2024-08-08', '2021-01-03', 'Blue', 'Biro', 'Medium');
 
-INSERT INTO sales(price, quantity_sold, sale_date)
-VALUES ('2500.00', '10', '2023-12-15');
+-- INSERT INTO sales(price, quantity_sold, sale_date)
+-- VALUES ('2500.00', '10', '2023-12-15');
+--
+-- INSERT INTO sales(price, quantity_sold, sale_date)
+-- VALUES ('2000', '20', '2024-02-10');
 
-INSERT INTO sales(price, quantity_sold, sale_date)
-VALUES ('2000', '20', '2024-02-10');
-
-INSERT INTO sales_products(products_id, sales_id)
-VALUES ('1', '1');
-
-INSERT INTO sales_products(products_id, sales_id)
-VALUES ('2', '2');
+-- INSERT INTO sales_products(products_id, sales_id)
+-- VALUES ('1', '1');
+--
+-- INSERT INTO sales_products(products_id, sales_id)
+-- VALUES ('2', '2');
 
 
 
