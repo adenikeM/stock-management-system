@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,31 +24,21 @@ public class ReturnedSales implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "sales_id")
-    private Sales originalSale;
+    private Sales sales;
 
     @Getter
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_info_id")
-    private CustomerInfo customerInfo;
-
     @Column(length = 20, nullable = false)
     private Integer quantityReturned;
-
-    @Column(length = 20, nullable = false)
-    private BigDecimal price;
 
     @Column(nullable = false)
     private String reasonForReturn;
 
     @Column(name = "return_date")
-    private LocalDateTime returnDate = LocalDateTime.now();
+    private LocalDate returnDate = LocalDate.now();
 
-    public Sales getSales() {
-        return this.originalSale;
-    }
 
 }

@@ -2,6 +2,7 @@ package com.techfirm.stock.service;
 
 import com.techfirm.stock.model.EmailDetails;
 import com.techfirm.stock.model.EmailService;
+import com.techfirm.stock.model.MailDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailMessage;
@@ -40,16 +41,18 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    @Override
-    public void sendRefundEmail(String customerEmail, String productName, BigDecimal refundAmount) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("horythorkehadenike@gmail.com");
-        message.setTo(customerEmail);
-        message.setSubject("Product Return and Refund Confirmation");
-        message.setText("Dear Customer, \n\n"
-                + "We have received your returned product: " + productName + ".\n"
-                + "The refund amount of " + refundAmount + " has been processed and confirm"
-                + "Thank you for shopping with us. \n\n"
-                + "Best regards");
+
+
+    public void sendRefundEmail(MailDetails details) {
+       try {
+           SimpleMailMessage message = new SimpleMailMessage();
+           message.setFrom("horythorkehadenike@gmail.com");
+           message.setTo(details.recipient());
+           message.setSubject(details.subject());
+           message.setText(details.msgBody());
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
+
 }
