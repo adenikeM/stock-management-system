@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class ReturnedSalesRequest {
     private Long salesId;
-    private Long productId;
-    private Integer quantityReturned;
+    private List<ProductReturn> productReturn;
     private String reasonForReturn;
     private LocalDate returnDate = LocalDate.now();
 }

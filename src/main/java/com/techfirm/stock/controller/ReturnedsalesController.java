@@ -32,8 +32,7 @@ public class ReturnedsalesController {
         log.info("Incoming request {}", request);
         ReturnedSales returnedSales = returnedSalesService.createReturnedSales(
                 request.getSalesId(),
-                request.getProductId(),
-                request.getQuantityReturned(),
+                request.getProductReturn(),
                 request.getReasonForReturn());
         return ResponseEntity.ok(returnedSales);
     }
