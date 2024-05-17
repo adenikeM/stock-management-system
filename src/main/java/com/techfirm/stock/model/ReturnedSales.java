@@ -1,16 +1,14 @@
 package com.techfirm.stock.model;
 
+import com.techfirm.stock.model.enumeration.ReturnReason;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -34,10 +32,13 @@ public class ReturnedSales implements Serializable {
     @Column(length = 20, nullable = false)
     private Integer quantityReturned;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String reasonForReturn;
+    private ReturnReason reasonForReturn;
 
-    @Column(name = "return_date")
+    @Column(length = 200)
+    private String additionalComments;
+
     private LocalDate returnDate = LocalDate.now();
 
 
