@@ -4,13 +4,17 @@ import com.techfirm.stock.constraint.ValidPassword;
 import com.techfirm.stock.model.enumeration.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user_profile")
 public class User implements Serializable {
     @Id
@@ -52,4 +56,22 @@ public class User implements Serializable {
 
     @OneToOne
     private Role userRole;
+
+    public User(String lastName,String firstName,  String userName, String email,  String password){
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String lastName, String firstName, String userName, String email, String password, Address address, Role userRole) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.userRole = userRole;
+    }
 }

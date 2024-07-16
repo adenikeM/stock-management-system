@@ -20,7 +20,7 @@ public class UserService {
     private final RoleService roleService;
     private final AddressRepository addressRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, RoleService roleService, AddressRepository addressRepository) {
+    public UserService(UserRepository userRepository, RoleService roleService, AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.addressRepository = addressRepository;
