@@ -28,7 +28,7 @@ public class ReturnSalesService {
     }
 
     public ReturnedSales createReturnedSales(Long salesId, List<ProductReturn> productReturn, ReturnReason reasonForReturn, String additionalComments) {
-        // Retrieve sales entitiy
+        // Retrieve sales entity
         Sales sales = salesRepository.findById(salesId).orElseThrow(() -> new RuntimeException("Sales with id " + salesId + " not found"));
 
         BigDecimal totalRefundAmount = BigDecimal.ZERO;

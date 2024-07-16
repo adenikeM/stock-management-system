@@ -114,6 +114,16 @@ public class ReturnedSalesService {
 
     }
     //.status(HttpStatus.CREATED).body("Returned sales with ID " + returnedSales.getId() + " created successfully");
-
+    //private boolean isProductReturnAllowedToUpdateQuantity(ReturnReason reasonForReturn) {
+    //    // Logic to determine if the product quantity can be updated based on the reason for return
+    //    switch (reasonForReturn) {
+    //        case DAMAGED:
+    //        case EXPIRED:
+    //            // Product quantity cannot be updated if it's damaged or expired
+    //            return false;
+    //        default:
+    //            // For other reasons, product quantity can be updated
+    //            return true;
+    //    }
 }
 
