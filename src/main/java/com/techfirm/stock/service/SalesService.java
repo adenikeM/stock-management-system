@@ -3,6 +3,7 @@ package com.techfirm.stock.service;
 import com.techfirm.stock.model.Product;
 import com.techfirm.stock.model.ReturnedSales;
 import com.techfirm.stock.model.Sales;
+import com.techfirm.stock.model.dto.SaleResponseDTO;
 import com.techfirm.stock.repository.ReturnedSalesRepository;
 import com.techfirm.stock.repository.SalesRepository;
 
@@ -16,9 +17,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,6 +45,21 @@ public class SalesService {
     }
     public Optional<Sales> getSaleById(Long id) {
         return salesRepository.findById(id);
+    }
+
+
+    public List<SaleResponseDTO> getSalesByDate(LocalDateTime saleDate) {
+        List<Sales> sales = salesRepository.findBySalesDate(saleDate);
+        List<SaleResponseDTO> responses = new ArrayList<>();
+        for (Sales sale : sales) {
+            SaleResponseDTO response = new SaleResponseDTO();
+            response.setProductName(sale.getProducts().stream().map(Product::getName).collect(Collectors.joining(", ")));
+            response.setQuantitySold(sale.getTotalQuantitySold());
+            response.setSaleDate(sale.getSalesDate());
+            response.setTotalPrice(sale.getPrice());
+            responses.add(response);
+        }
+        return responses;
     }
 
     public void deleteSale(Long id) {
