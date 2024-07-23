@@ -1,6 +1,7 @@
 package com.techfirm.stock.controller;
 
 import com.techfirm.stock.model.Sales;
+import com.techfirm.stock.model.dto.SaleResponseDTO;
 import com.techfirm.stock.service.SalesService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -51,6 +53,13 @@ public class SalesController {
                           .map(sale -> ResponseEntity.ok().body(sale))
                           .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/sales/{salesDate}")
+    public ResponseEntity<List<SaleResponseDTO>> getSalesByDate(@PathVariable LocalDateTime salesDate) {
+        List<SaleResponseDTO> salesResponseDTOs = salesService.getSalesByDate(salesDate);
+        return ResponseEntity.ok(salesResponseDTOs);
+
+    }
+
 
     @DeleteMapping("/sales/{id}")
     public ResponseEntity<Sales> deleteSale(@PathVariable Long id) {

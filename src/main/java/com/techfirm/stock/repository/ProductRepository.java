@@ -1,6 +1,7 @@
 package com.techfirm.stock.repository;
 
 import com.techfirm.stock.model.Product;
+import com.techfirm.stock.model.ProductCategory;
 import jakarta.validation.constraints.Past;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    Long countByProductCategory(ProductCategory category);
     boolean existsByIdIn(@NonNull List<Long> ids);
     @Query("select p from Product p where UPPER(p.name) LIKE CONCAT('%',UPPER(?1),'%') and UPPER( p.colour) LIKE CONCAT( '%',UPPER(?2),'%') and UPPER( p.size) LIKE  CONCAT('%',UPPER(?3),'%')")
     Page<Product> findByNameContainingOrColourContainingOrSizeContaining(String name, String colour, String size, Pageable pageable);
