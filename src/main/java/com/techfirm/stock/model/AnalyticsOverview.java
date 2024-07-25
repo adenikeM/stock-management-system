@@ -15,7 +15,7 @@ private Long salesCount;
 
 private Long returnedSalesCount;
 
-private List<ProductCategoryCount> categoryCounts;
+private Long productCategoryCount;
 }
 
 
