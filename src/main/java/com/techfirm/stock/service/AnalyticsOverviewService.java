@@ -37,14 +37,17 @@ public class AnalyticsOverviewService {
         Long returnedSalesCount = returnedSalesRepository.count();
         overview.setReturnedSalesCount(returnedSalesCount);
 
-        List<ProductCategory> categories = productCategoryRepository.findAll();
-        List<ProductCategoryCount> categoryCounts = new ArrayList<>();
-        for(ProductCategory category : categories) {
-            Long count = productRepository.countByProductCategory(category);
-            ProductCategoryCount categoryCount = new ProductCategoryCount(category.getCategoryName(), count);
-            categoryCounts.add(categoryCount);
-        }
-        overview.setCategoryCounts(categoryCounts);
+        Long productCategoryCount = productCategoryRepository.count();
+        overview.setProductCategoryCount(productCategoryCount);
+
+//        List<ProductCategory> categories = productCategoryRepository.findAll();
+//        List<ProductCategoryCount> categoryCounts = new ArrayList<>();
+//        for(ProductCategory category : categories) {
+//            Long count = productRepository.countByProductCategory(category);
+//            ProductCategoryC;ount categoryCount = new ProductCategoryCount(category.getCategoryName(), count);
+//            categoryCounts.add(categoryCount);
+//        }
+//        overview.setCategoryCounts(categoryCounts);
 
         return overview;
     }

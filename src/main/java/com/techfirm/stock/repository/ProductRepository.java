@@ -20,8 +20,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT COUNT(p) FROM Product p JOIN p.productCategory pc WHERE pc = :category")
-    Long countByProductCategory(@Param("category") ProductCategory category);
+//    @Query("SELECT COUNT(p) FROM Product p JOIN p.productCategory pc WHERE pc = :category")
+//    Long countByProductCategory(@Param("category") ProductCategory category);
     boolean existsByIdIn(@NonNull List<Long> ids);
     @Query("select p from Product p where UPPER(p.name) LIKE CONCAT('%',UPPER(?1),'%') and UPPER( p.colour) LIKE CONCAT( '%',UPPER(?2),'%') and UPPER( p.size) LIKE  CONCAT('%',UPPER(?3),'%')")
     Page<Product> findByNameContainingOrColourContainingOrSizeContaining(String name, String colour, String size, Pageable pageable);
