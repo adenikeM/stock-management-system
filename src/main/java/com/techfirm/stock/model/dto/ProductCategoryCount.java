@@ -1,5 +1,8 @@
 package com.techfirm.stock.model.dto;
 
+import lombok.Data;
+
+@Data
 public class ProductCategoryCount {
     private String categoryName;
 
@@ -13,4 +16,5 @@ public class ProductCategoryCount {
         this.count = count;
 
     }
+
 }
