@@ -44,6 +44,7 @@ public class AnalyticsOverviewService {
             ProductCategoryCount categoryCount = new ProductCategoryCount(category.getCategoryName(), count);
             categoryCounts.add(categoryCount);
         }
+        overview.setCategoryCounts(categoryCounts);
 
         return overview;
     }
