@@ -1,21 +1,22 @@
 package com.techfirm.stock.model;
 
-import com.techfirm.stock.model.dto.ProductCategoryCount;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
-public class AnalyticsOverview  implements Serializable {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AnalyticsOverview implements Serializable {
 
-private Long productCount;
-
-private Long salesCount;
-
-private Long returnedSalesCount;
-
-private Long productCategoryCount;
+    private Long productCount;
+    private Long salesCount;
+    private Long returnedSalesCount;
+    private Long productCategoryCount;
 }
 
 
