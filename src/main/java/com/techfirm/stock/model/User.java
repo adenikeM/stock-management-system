@@ -4,19 +4,25 @@ import com.techfirm.stock.constraint.ValidPassword;
 import com.techfirm.stock.model.enumeration.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
-@Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "user_profile")
-public class User implements Serializable {
+@ToString
+public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,6 +60,10 @@ public class User implements Serializable {
     @ValidPassword
     private String password;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     @OneToOne
     private Role userRole;
 
@@ -73,5 +83,36 @@ public class User implements Serializable {
         this.password = password;
         this.address = address;
         this.userRole = userRole;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(userRole.getRoleTitle()));
+
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
