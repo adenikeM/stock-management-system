@@ -1,8 +1,6 @@
 package com.techfirm.stock.service;
 
-import com.techfirm.stock.model.Location;
 import com.techfirm.stock.model.Role;
-import com.techfirm.stock.repository.LocationRepository;
 import com.techfirm.stock.repository.RoleRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +31,11 @@ public class RoleService {
     }
     public Optional<Role> getRole(Integer id) {
         return roleRepository.findById(id);
+    }
+
+    public Role getRoleByTitle(String roleTitle){
+        return roleRepository.findRoleByRoleTitle(roleTitle)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
     }
 
     public Role createRole(Role role) {
