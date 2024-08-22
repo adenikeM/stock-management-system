@@ -2,6 +2,9 @@ INSERT INTO user_address(address, city)
 VALUES ('7, Station Road', 'Osogbo');
 INSERT INTO user_address(address, city)
 VALUES ('Oloje Estate', 'Ilorin');
+INSERT INTO user_address(address, city)
+VALUES ('Ojoo', 'Ibadan');
+
 
 INSERT INTO user_role(role_title)
 VALUES ('Sales Attendant');
@@ -11,18 +14,18 @@ VALUES ('Admin');
 INSERT INTO user_profile(birth_date, user_role_id, address_id, first_name, last_name, email, gender,
                          other_names, password, user_name)
 VALUES ('2000-03-03', '1', '1', 'Tola', 'Ade', 'tola@gmail.com', 'FEMALE', 'Ola', 'Wumit@23',
-        'ToksToks');
+        'ToksToks') ON CONFLICT (user_name) DO NOTHING;
 
 INSERT INTO user_profile(birth_date, user_role_id, address_id, first_name, last_name, email, gender,
                          other_names, password, user_name)
 VALUES ('2001-03-03', '2', '2', 'Tolu', 'Ade', 'tolu@gmail.com', 'FEMALE', 'Ola', 'Wumih@23',
-        'TokToks');
+        'TokToks') ON CONFLICT (user_name) DO NOTHING;
 
 INSERT INTO location(shelf, name)
 VALUES ('2', 'Right Corner');
 
 INSERT INTO product_category(location_id, created_date, category_name)
-VALUES ('1', '2019-01-05', 'Stationary');
+VALUES ('1', '2019-01-05', 'Stationary') ON CONFLICT (location_id) DO NOTHING;
 
 INSERT INTO product(price, product_category_id, available_quantity, expiry_date, manufacture_date,
                     colour, name, size)
